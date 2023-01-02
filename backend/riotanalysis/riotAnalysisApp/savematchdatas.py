@@ -105,21 +105,22 @@ for i in range(len(traits)):
     trait_info = traits[i]
     traits_list.append(trait_info['name'] + "-" + str(trait_info['style']))
 
-MatchData.objects.create(
-    puuid = info['puuid'],
-    last_level = info['level'],
-    placement = info['placement'],
-    last_round = info['last_round'],
-    play_time = info['time_eliminated'],
-    gold_left = info['gold_left'],
-    total_damage_to_players = info['total_damage_to_players'],
+# MatchData.objects.create(
+#     puuid = info['puuid'],
+#     last_level = info['level'],
+#     placement = info['placement'],
+#     last_round = info['last_round'],
+#     play_time = info['time_eliminated'],
+#     gold_left = info['gold_left'],
+#     total_damage_to_players = info['total_damage_to_players'],
 
-    augments = info['augments'],
-    traits = traits_list,
-    champions = champions_list,
-    tiers = tiers_list,
-    items = items_list,
-)
+#     augments = info['augments'],
+#     traits = traits_list,
+#     champions = champions_list,
+#     tiers = tiers_list,
+#     items = items_list,
+# )
+print(traits_list)
 
 
 
