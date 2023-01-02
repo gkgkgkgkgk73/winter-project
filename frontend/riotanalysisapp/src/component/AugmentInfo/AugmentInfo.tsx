@@ -8,7 +8,7 @@ export interface IProps {
 function AugmentInfo(props:IProps) {
     return(
         <div>
-
+            
         </div>
     );
 }
