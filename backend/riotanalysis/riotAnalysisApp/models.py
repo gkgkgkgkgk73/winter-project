@@ -35,16 +35,16 @@ class UpperItem(models.Model):
     )
 
 class MatchData(models.Model):
-    puuid = models.CharField(max_length=1000)
+    match_id = models.CharField(max_length=100,blank=True)
+    puuid = models.CharField(max_length=1000,blank=True)
     last_level = models.IntegerField()
     placement = models.IntegerField()
     last_round = models.IntegerField()
     play_time = models.FloatField()
     gold_left = models.IntegerField()
     total_damage_to_players = models.IntegerField()
+
     augments = models.JSONField()
     traits = models.JSONField()
-    champions = models.JSONField()
-    tiers = models.JSONField()
-    items = models.JSONField()
+    units = models.JSONField()
     
