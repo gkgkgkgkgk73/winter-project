@@ -42,7 +42,6 @@ class MatchData(models.Model):
     play_time = models.FloatField()
     gold_left = models.IntegerField()
     total_damage_to_players = models.IntegerField()
-
     augments = models.JSONField()
     traits = models.JSONField()
     champions = models.JSONField()

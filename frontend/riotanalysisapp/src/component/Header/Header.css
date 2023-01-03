@@ -1,15 +1,16 @@
 .header{
-    height: 5vh;
+    height: 15vh;
     width: 100vw;
     display: flex;
+    background-color:cornflowerblue;
     flex-direction: column;
 }
-
 .logo{
     margin: 0.5vw;
-    font-size: 2vh;
+    font-size: 5vh;
 }
 .page-list{
+    margin-top: 10px;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;

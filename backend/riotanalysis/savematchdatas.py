@@ -4,11 +4,18 @@ import pandas as pd
 import requests
 from pathlib import Path
 import time
-from .models import MatchData
+
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE","riotanalysis.settings")
+
+import django
+django.setup()
+
+from riotanalysisapp.models import MatchData
 
 #----------------------------------------------------------------------------------------------
 #API Keys
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 secret_file = os.path.join(BASE_DIR, 'secrets.json')  # secrets.json 파일 위치를 명시

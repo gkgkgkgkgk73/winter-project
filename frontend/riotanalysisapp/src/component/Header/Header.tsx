@@ -1,6 +1,7 @@
 import React from 'react';
 import './Header.css';
 import { useNavigate } from 'react-router-dom';
+
 function Header(){
     const navigate = useNavigate();
     const onClickExplanationHandler = () => {
@@ -15,10 +16,13 @@ function Header(){
     const onClickSuggestionHandler = () => {
         navigate('/Suggestion');
     }
+    const onClickLogoHandler = () => {
+        navigate('/');
+    }
     return (
         <div className='header'>
             <div className='logo'>
-                <text>롤체 정보</text>
+                <text onClick={onClickLogoHandler}>롤체 정보</text>
             </div>
             <div className='page-list'>
                 <button id = 'navigate-btn' onClick={onClickExplanationHandler}>롤토체스 설명</button>

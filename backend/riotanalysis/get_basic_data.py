@@ -1,5 +1,13 @@
 import requests
 
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE","riotanalysis.settings")
+
+import django
+django.setup()
+
+from riotanalysisapp.models import MatchData
+
 url = 'https://raw.communitydragon.org/12.23/cdragon/tft/ko_kr.json'
 
 resp = requests.get(url=url)

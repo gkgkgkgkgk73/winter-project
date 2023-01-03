@@ -9,8 +9,15 @@ export interface IProps {
 }
 function ItemInfo(props:IProps) {
     return(
-        <div>
-            
+        <div className = "itemInfoBox">
+            <img src={props.itemImg}/>
+            <text id="itemName">{props.itemName}</text>
+            <div className="itemCombinationBox">
+                <img src={props.itemCombination[0]}/>
+                <text>+</text>
+                <img src={props.itemCombination[1]}/>
+            </div>
+            <text id="itemDetail">{props.itemDetail}</text>
         </div>
     );
 }

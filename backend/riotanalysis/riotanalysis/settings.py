@@ -43,7 +43,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'riotAnalysisApp.apps.RiotanalysisappConfig',
+    'riotanalysisapp.apps.RiotanalysisappConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

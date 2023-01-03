@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import Trait
 
 # Create your views here.
 def index():
