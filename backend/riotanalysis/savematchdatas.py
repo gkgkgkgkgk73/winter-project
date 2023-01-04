@@ -10,7 +10,6 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE","riotanalysis.settings")
 
 import django
 django.setup()
-
 from riotanalysisapp.models import MatchData
 
 #----------------------------------------------------------------------------------------------
@@ -34,100 +33,81 @@ SECRET_KEY = get_secret("SECRET_KEY")
 
 api_key = get_secret("RIOT_API_KEY")
 #----------------------------------------------------------------------------------------------
-
-data = pd.read_csv('TFTMasterUserInfo.csv')
+data = pd.read_csv('TFTMasterUserInfo.csv') # 처음 시작할 당시 마스터 티어 유저들 데이터
 puuids = data[['puuid']].values.tolist()
 
-puuid = puuids[0][0] # 반복문 적용 시 [i][i]로 변경
 
-get_match_id_url = "https://asia.api.riotgames.com/tft/match/v1/matches/by-puuid/" + puuid + "/ids?start=0&count=20&api_key=" + api_key
-r = requests.get(get_match_id_url)
-recentMatchIds = r.json()
-
-# for matchid in recentMatchIds:
-#     get_match_datas_url = "https://asia.api.riotgames.com/tft/match/v1/matches/" + matchid + "?api_key=" + api_key
-#     try:
-#         r = requests.get(get_match_datas_url)
-  
-#         while r.status_code == 429:
-#             time.sleep(5)
-#             r = requests.get(get_match_datas_url)
-#     except:
-#       pass
+for j in range(len(puuids)):
     
-#     result = r.json()
-#     position = result['metadata']['participants'].index(puuid)
-#     info = result['info']['participants'][position]
+    # for test
+    # if j > 0:
+    #     break
 
-# augments = info['augments']
-# companion = info['companion']
-# last_round = info['last_round']
-# level = info['level']
-# placement = info['placement']
-# time_eliminated = info['time_eliminated']
-# traits = info['traits']
+    puuid = puuids[j][0] # j번째는 리스트이므로 0번째 참조해서 str으로
 
-# print(info)
+    get_match_id_url = "https://asia.api.riotgames.com/tft/match/v1/matches/by-puuid/" + puuid + "/ids?start=0&count=20&api_key=" + api_key
+    r = requests.get(get_match_id_url)
+    recentMatchIds = r.json()
 
-match_id = recentMatchIds[2]
-get_match_datas_url = "https://asia.api.riotgames.com/tft/match/v1/matches/" + match_id + "?api_key=" + api_key
-try:
-  r = requests.get(get_match_datas_url)
-  
-  while r.status_code == 429:
-    time.sleep(5)
-    r = requests.get(get_match_datas_url)
-except:
-      pass
-result = r.json()
+    for i in range(len(recentMatchIds)):
+        
+        # for test
+        # if i > 0:
+        #     break
 
-position = result['metadata']['participants'].index(puuid)
-info = result['info']['participants'][position]
+        match_id = recentMatchIds[i]
+        get_match_datas_url = "https://asia.api.riotgames.com/tft/match/v1/matches/" + match_id + "?api_key=" + api_key
+        
+        try:
+            r = requests.get(get_match_datas_url)
+            while r.status_code == 429:
+                time.sleep(5)
+                r = requests.get(get_match_datas_url)
+        except:
+            pass
+        result = r.json()
 
-units = info['units']
-champions_list = []
-tiers_list = []
-items_list = []
+        position = result['metadata']['participants'].index(puuid)
+        info = result['info']['participants'][position]
 
-for i in range(len(units)):
-    unit_info = units[i] 
-    character_id = unit_info['character_id']
-    tier = str(unit_info['tier'])
-    
-    item_list = unit_info['items']
-    # item_list는 list 형식이므로 하나의 string으로 변환
-    item_str = ""
-    for item in item_list:
-        item_str += ("-" + str(item))
+        units = info['units']
+        units_json = json.dumps(units)
 
-    # list에 append
-    champions_list.append(character_id)
-    tiers_list.append(tier)
-    items_list.append(item_str)
+        traits = info['traits']
+        traits_json = json.dumps(traits)
 
-# traits 처리
-traits = info['traits']
-traits_list = []
-for i in range(len(traits)):
-    trait_info = traits[i]
-    traits_list.append(trait_info['name'] + "-" + str(trait_info['style']))
+        augments = info['augments']
+        augments_json = json.dumps(augments)
 
-# MatchData.objects.create(
-#     puuid = info['puuid'],
-#     last_level = info['level'],
-#     placement = info['placement'],
-#     last_round = info['last_round'],
-#     play_time = info['time_eliminated'],
-#     gold_left = info['gold_left'],
-#     total_damage_to_players = info['total_damage_to_players'],
+        game_type = result['info']['tft_game_type']
+        set_num = result['info']['tft_set_number']
 
-#     augments = info['augments'],
-#     traits = traits_list,
-#     champions = champions_list,
-#     tiers = tiers_list,
-#     items = items_list,
-# )
-print(traits_list)
+        exist = MatchData.objects.filter(
+            puuid = puuid,
+            match_id = match_id 
+        ).values().count()
+        # exist == 0 이면 새로 받은 데이터가 DB에 없는 것.
+
+        if exist == 0:        
+            MatchData.objects.create(
+                match_id = match_id,
+                puuid = info['puuid'],
+                game_type = game_type,
+                set_number = set_num,
+                last_level = info['level'],
+                placement = info['placement'],
+                last_round = info['last_round'],
+                play_time = info['time_eliminated'],
+                gold_left = info['gold_left'],
+                total_damage_to_players = info['total_damage_to_players'],
+
+                augments = augments_json,
+                traits = traits_json,
+                units = units_json
+            )
+        
 
 
-
+    # 이건 test용    
+    if j % 10 == 0:
+        print('Order: ' + str(j) + 'th of ' + str(len(puuids)))
