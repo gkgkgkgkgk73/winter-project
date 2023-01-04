@@ -38,12 +38,23 @@ puuids = data[['puuid']].values.tolist()
 
 
 for j in range(len(puuids)):
+    
+    # for test
+    # if j > 0:
+    #     break
+
     puuid = puuids[j][0] # j번째는 리스트이므로 0번째 참조해서 str으로
 
     get_match_id_url = "https://asia.api.riotgames.com/tft/match/v1/matches/by-puuid/" + puuid + "/ids?start=0&count=20&api_key=" + api_key
     r = requests.get(get_match_id_url)
     recentMatchIds = r.json()
+
     for i in range(len(recentMatchIds)):
+        
+        # for test
+        # if i > 0:
+        #     break
+
         match_id = recentMatchIds[i]
         get_match_datas_url = "https://asia.api.riotgames.com/tft/match/v1/matches/" + match_id + "?api_key=" + api_key
         
@@ -68,6 +79,9 @@ for j in range(len(puuids)):
         augments = info['augments']
         augments_json = json.dumps(augments)
 
+        game_type = result['info']['tft_game_type']
+        set_num = result['info']['tft_set_number']
+
         exist = MatchData.objects.filter(
             puuid = puuid,
             match_id = match_id 
@@ -78,6 +92,8 @@ for j in range(len(puuids)):
             MatchData.objects.create(
                 match_id = match_id,
                 puuid = info['puuid'],
+                game_type = game_type,
+                set_number = set_num,
                 last_level = info['level'],
                 placement = info['placement'],
                 last_round = info['last_round'],
@@ -90,13 +106,8 @@ for j in range(len(puuids)):
                 units = units_json
             )
         
+
+
     # 이건 test용    
     if j % 10 == 0:
         print('Order: ' + str(j) + 'th of ' + str(len(puuids)))
-    if j > 2:
-        break
-    
-
-# 추가할 것
-# 1. 지금 몇번째 중 몇번째 다운받는지 10단위로 print
-# 2. matchid & puuid 중복이 있는지 검사...?

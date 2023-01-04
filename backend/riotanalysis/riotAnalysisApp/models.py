@@ -37,6 +37,8 @@ class UpperItem(models.Model):
 class MatchData(models.Model):
     match_id = models.CharField(max_length=100,blank=True)
     puuid = models.CharField(max_length=1000,blank=True)
+    game_type = models.CharField(max_length=1000,blank=True)
+    set_number = models.IntegerField(default = 0)
     last_level = models.IntegerField()
     placement = models.IntegerField()
     last_round = models.IntegerField()
