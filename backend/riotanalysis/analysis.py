@@ -11,6 +11,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE","riotanalysis.settings")
 import django
 django.setup()
 from riotanalysisapp.models import MatchData
+from django.db.models import Q
 
 """
 df = MatchData.objects.values('last_level')
@@ -46,8 +47,19 @@ augments_list = list(set(augments_list))
 # print(len(augments_list)) : current 272
 
 target = augments_list[0]
-print(target)
 
+queryset = MatchData.objects.all().values('id', 'placement', 'augment1', 'augment2', 'augment3')
+print(queryset)
+
+
+#result = queryset.filter(Q(augment1 = target) | Q(augment2 = target) | Q(augment3 = target))
+#print(result)
+
+
+
+
+
+#filter할 때 더블업 제외
 
 
 
