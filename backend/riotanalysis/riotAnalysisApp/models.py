@@ -63,7 +63,10 @@ class MatchData(models.Model):
     gold_left = models.IntegerField()
     total_damage_to_players = models.IntegerField()
 
-    augments = models.JSONField()
+    augments1 = models.CharField(max_length= 100,blank=True)
+    augments2 = models.CharField(max_length= 100,blank=True)
+    augments3 = models.CharField(max_length= 100,blank=True)
+
     traits = models.JSONField()
     units = models.JSONField()
     
