@@ -35,9 +35,9 @@ api_key = get_secret("RIOT_API_KEY")
 #----------------------------------------------------------------------------------------------
 data = pd.read_csv('TFTMasterUserInfo.csv') # 처음 시작할 당시 마스터 티어 유저들 데이터
 puuids = data[['puuid']].values.tolist()
+print(len(puuids))
 
-
-for j in range(len(puuids)):
+for j in range(660, len(puuids)):
     
     # for test
     # if j > 0:

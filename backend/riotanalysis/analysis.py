@@ -31,32 +31,45 @@ for place in df:
     top4.append(istop4)
 """
 # augments 전체 데이터
-df = MatchData.objects.values('augments')
-length = len(df)
-augments_list = []
+augments_str = ['augments1','augments2','augments3']
 
-for i in range(length):
-    data = df[i]['augments']
-    data = data.split('"')
-    data = [item for item in data if len(item) > 2]
+for j in range(len(augments_str)):
+    df = MatchData.objects.values(augments_str[j])
+    length = len(df)
+    augments_list = []
 
-    for item in data:
-        augments_list.append(item)
+    for i in range(length):
+        data = df[i]['augments'+ str(j+1)]
+        augments_list.append(data)
 
 augments_list = list(set(augments_list))
-# print(len(augments_list)) : current 272
-
-target = augments_list[0]
-
-queryset = MatchData.objects.all().values('id', 'placement', 'augment1', 'augment2', 'augment3')
-print(queryset)
+#print((augments_list)) #: current 272
+zero_inplated_augments_list = augments_list[1:]
 
 
-#result = queryset.filter(Q(augment1 = target) | Q(augment2 = target) | Q(augment3 = target))
-#print(result)
+data = []
+for i in range(len(zero_inplated_augments_list)):
+    target = zero_inplated_augments_list[i]
+    
+    queryset = MatchData.objects.all().values('id', 'placement', 'augments1', 'augments2', 'augments3')
+    result = queryset.filter(Q(augments1 = target) | Q(augments2 = target) | Q(augments3 = target))
+    
+    win_count = 0
+    for item in result:
+        if item['placement'] < 5:
+            win_count = win_count + 1
 
+    win_rate = win_count / len(result)
+    dat = [win_rate, win_count, len(result)]
+    data.append(dat)
+    #print("Win rate is " + str(win_rate) + "/ " + str(win_count) + "/ " + str(len(result)))    
 
+    #if i > 9: break
 
+df = pd.DataFrame(data, columns = ['win rate', 'win count', 'total games'])
+print(df)
+
+ 
 
 
 #filter할 때 더블업 제외
