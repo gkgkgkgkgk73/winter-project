@@ -13,11 +13,11 @@ import TraitInfo from '../../component/TraitInfo/TraitInfo';
 function Explanation(){
 
     const dispatch = useDispatch<AppDispatch>();
-    const trait = useSelector(selectAPI).trait;
-    const champion = useSelector(selectAPI).champion;
-    const upperitem = useSelector(selectAPI).item.upperitem;
-    const baseitem = useSelector(selectAPI).item.baseitem;
-    const augment = useSelector(selectAPI).augment;
+    const trait = useSelector(selectAPI).trait.traits;
+    const champion = useSelector(selectAPI).champion.champions;
+    const upperitem = useSelector(selectAPI).item.upperItems;
+    const baseitem = useSelector(selectAPI).item.baseItems;
+    const augment = useSelector(selectAPI).augment.augments;
 
     const dd = [""]
     useEffect(()=>{
