@@ -1,8 +1,8 @@
 import {configureStore } from "@reduxjs/toolkit";
-// import riotAPIReducer from "./slices/riotAPI";
+import riotAPIReducer from "./slices/riotAPI";
 export const store = configureStore({
     reducer:{
-        // riotAPI: riotAPIReducer,
+        riotAPI: riotAPIReducer,
     },
 });
 
