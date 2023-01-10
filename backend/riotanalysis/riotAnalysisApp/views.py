@@ -10,15 +10,43 @@ def index():
     
 def get_trait_info(request):
     if request.method == "GET":
+        result = []
         traits = Trait.objects.all()
-        return HttpResponse(traits, status = 200)
+        for trait in traits:
+            data = {
+                'name':trait.trait_name,
+                'apiName':trait.trait_apiName,
+                'img': trait.trait_img,
+                'effect':trait.trait_effect['effect'],
+                'info':trait.trait_info,
+                'id':trait.id
+            }
+            result.append(data)
+        return HttpResponse(result, status = 200)
     else:
         return HttpResponse(status = 403)
 
 def get_champion_info(request):
     if request.method == "GET":
         champions = Champion.objects.all()
-        return HttpResponse(champions, status = 200)
+        result = []
+        for champion in champions:
+            trait = []
+            for t in champion.traits.all():
+                trait.append(t.id)
+            data = {
+                'name':champion.champion_name,
+                'apiName':champion.champion_apiName,
+                'img': champion.champion_img,
+                'variables':champion.champion_variables,
+                'traits': trait,
+                'info':champion.champion_info,
+                'id':champion.id,
+                'championStats':champion.champion_stats,
+                'championCost':champion.champion_cost
+            }
+            result.append(data)
+        return HttpResponse(result, status = 200)
     else:
         return HttpResponse(status = 403)
 
@@ -26,13 +54,37 @@ def get_item_info(request):
     if request.method == "GET":
         result = {}
         base_items = []
-        upper_items = UpperItem.objects.all().exclude(item_apiName__contains = 'TFT6_').values()
-        base_item_list = BaseItem.objects.all()
+        upper_items = UpperItem.objects.all().exclude(item_apiName__contains = 'TFT6_')
+        upper_result = []
+    
+        for it in upper_items:
+            upper_base = []
+            for b in it.base_items.all():
+                upper_base.append(b.item_id)
+            data = {
+                'id':it.item_id,
+                'name':it.item_name,
+                'img':it.item_img,
+                'info':it.item_info,
+                'apiName':it.item_apiName,
+                'effect':it.item_effect,
+                'base_items':upper_base
+            }
+            upper_result.append(data)
+        base_item_list = BaseItem.objects.all().values()
         for base in base_item_list:
             if base['item_name'] in specific_item:
-                base_items.append(base)
+                data = {
+                    'id':base['item_id'],
+                    'name':base['item_name'],
+                    'img':base['item_img'],
+                    'info':base['item_info'],
+                    'apiName':base['item_apiName'],
+                    'effect':base['item_effect']
+                }
+                base_items.append(data)
         if upper_items.exists():
-            result = {'upper_items': upper_items, 'base_items': base_items}
+            result = {'upper_items': upper_result, 'base_items': base_items}
             return HttpResponse(result, status=200)
         else:
             return HttpResponse(status=404)
@@ -43,15 +95,34 @@ def get_item_info(request):
 def get_augment_info(request):
     if request.method == "GET":
         augments = Augment.objects.all()
-        return HttpResponse(augments, status = 200)
+        result = []
+        for augment in augments:
+            data = {
+                'name':augment.augment_name,
+                'apiName':augment.augment_apiName,
+                'img': augment.augment_img,
+                'effect':augment.augment_effect,
+                'info':augment.augment_info,
+                'id':augment.augment_id
+            }
+            result.append(data)
+        return HttpResponse(result, status = 200)
     else:
         return HttpResponse(status = 403)
 
 def get_trait_detail(request, trait_id):
     if request.method == "POST":
         try:
-            traits = Trait.objects.filter(trait_id = trait_id)
-            return HttpResponse(traits, status = 200)
+            trait = Trait.objects.get(id = trait_id)
+            data = {
+                'name':trait.trait_name,
+                'apiName':trait.trait_apiName,
+                'img': trait.trait_img,
+                'effect':trait.trait_effect['effect'],
+                'info':trait.trait_info,
+                'id':trait.id
+            }
+            return HttpResponse(data, status = 200)
         except:
             return HttpResponse(status = 404)
     else:

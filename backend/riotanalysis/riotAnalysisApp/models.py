@@ -4,14 +4,14 @@ from django.db import models
 class Trait(models.Model):
     trait_name = models.CharField(max_length=200, blank=True, null=True, )
     trait_apiName = models.CharField(max_length=200 ,blank=True, null=True, )
-    trait_img = models.ImageField(upload_to= 'gameimages/', blank=True,default='')
+    trait_img = models.CharField(max_length=200, blank=True, null=True, )
     trait_effect = models.JSONField()
     trait_info = models.CharField(max_length=1000, blank=True, null=True, )
     
 class Augment(models.Model):
     augment_apiName= models.CharField(max_length=200, blank=True, null=True,)
     augment_info = models.CharField(max_length=200, blank=True, null=True,)
-    augment_img = models.ImageField(upload_to='gameimages/', blank=True, default='')
+    augment_img = models.CharField(max_length=200, blank=True, null=True, )
     augment_id = models.IntegerField()
     augment_name = models.CharField(max_length=200, blank=True, null=True, )
     augment_effect = models.JSONField()
@@ -20,7 +20,7 @@ class Champion(models.Model):
     champion_apiName = models.CharField(max_length=300, blank=True, null=True, )
     champion_variables = models.JSONField()
     champion_name = models.CharField(max_length=200, blank=True, null=True, )
-    champion_img = models.ImageField(upload_to='gameimages/', blank=True, default='')
+    champion_img = models.CharField(max_length=200, blank=True, null=True, )
     champion_info = models.CharField(max_length=1000, blank=True, null=True, )
     traits = models.ManyToManyField(
         Trait,
@@ -33,7 +33,7 @@ class Champion(models.Model):
 class BaseItem(models.Model):
     item_id = models.IntegerField()
     item_name = models.CharField(max_length=200,blank=True, null=True, )
-    item_img = models.ImageField(upload_to='gameimages/', blank=True, default='')
+    item_img = models.CharField(max_length=200, blank=True, null=True, )
     item_info = models.CharField(max_length=1000, blank=True, null=True, default='')
     item_apiName = models.CharField(max_length=200,blank=True, null=True, )
     item_effect = models.JSONField()
@@ -42,7 +42,7 @@ class BaseItem(models.Model):
 class UpperItem(models.Model):
     item_id = models.IntegerField()
     item_name = models.CharField(max_length=200,blank=True, null=True, )
-    item_img = models.ImageField(upload_to='gameimages/', blank=True, default='')
+    item_img = models.CharField(max_length=200, blank=True, null=True, )
     item_info = models.CharField(max_length=1000, blank=True, null=True, default='')
     item_apiName = models.CharField(max_length=200,blank=True, null=True, )
     item_effect = models.JSONField()
