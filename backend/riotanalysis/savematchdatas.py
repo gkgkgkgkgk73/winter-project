@@ -35,9 +35,9 @@ api_key = get_secret("RIOT_API_KEY")
 #----------------------------------------------------------------------------------------------
 data = pd.read_csv('TFTMasterUserInfo.csv') # 처음 시작할 당시 마스터 티어 유저들 데이터
 puuids = data[['puuid']].values.tolist()
+print(len(puuids))
 
-
-for j in range(len(puuids)):
+for j in range(660, len(puuids)):
     
     # for test
     # if j > 0:
@@ -77,8 +77,7 @@ for j in range(len(puuids)):
         traits_json = json.dumps(traits)
 
         augments = info['augments']
-        augments_json = json.dumps(augments)
-
+    
         game_type = result['info']['tft_game_type']
         set_num = result['info']['tft_set_number']
 
@@ -88,26 +87,48 @@ for j in range(len(puuids)):
         ).values().count()
         # exist == 0 이면 새로 받은 데이터가 DB에 없는 것.
 
-        if exist == 0:        
-            MatchData.objects.create(
-                match_id = match_id,
-                puuid = info['puuid'],
-                game_type = game_type,
-                set_number = set_num,
-                last_level = info['level'],
-                placement = info['placement'],
-                last_round = info['last_round'],
-                play_time = info['time_eliminated'],
-                gold_left = info['gold_left'],
-                total_damage_to_players = info['total_damage_to_players'],
+        if exist == 0:
+            if len(augments) == 1:
+                augments1 = augments[0]
+                augments2 = ""
+                augments3 = ""    
+            elif len(augments) == 2:
+                augments1 = augments[0]
+                augments2 = augments[1]
+                augments3 = ""   
+            elif len(augments) == 3:
+                augments1 = augments[0]
+                augments2 = augments[1]
+                augments3 = augments[2]
+            else:
+                augments1 = ""  
+                augments2 = ""
+                augments3 = ""  
 
-                augments = augments_json,
-                traits = traits_json,
-                units = units_json
-            )
+            try:    
+                MatchData.objects.create(
+                    match_id = match_id,
+                    puuid = info['puuid'],
+                    game_type = game_type,
+                    set_number = set_num,
+                    last_level = info['level'],
+                    placement = info['placement'],
+                    last_round = info['last_round'],
+                    play_time = info['time_eliminated'],
+                    gold_left = info['gold_left'],
+                    total_damage_to_players = info['total_damage_to_players'],  
+
+                    augments1 = augments1,
+                    augments2 = augments2,
+                    augments3 = augments3,
+                    traits = traits_json,
+                    units = units_json
+                )
+            except:
+                pass
         
-
 
     # 이건 test용    
     if j % 10 == 0:
         print('Order: ' + str(j) + 'th of ' + str(len(puuids)))
+
