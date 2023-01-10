@@ -30,6 +30,7 @@ export interface RiotTraitType{
     name:string;
     apiName:string;
     img:string;
+    id:number;
     effect:JSON;
     info:string;
 }
@@ -40,6 +41,7 @@ export interface TraitState {
 
 export interface RiotChampionType {
     apiName:string;
+    id:number;
     variables:JSON;
     name:string;
     img:string;
@@ -74,8 +76,6 @@ export interface AugmentRank {
     pickRate:number;
 }
 
-
-
 export interface BasicGameInfo {
     item:ItemState;
     champion:ChampionState;
@@ -104,7 +104,7 @@ const initialState:BasicGameInfo= {
 export const fetchItems = createAsyncThunk(
     "item/fetchItems",
     async()=>{
-        const response = await axios.get<{upper_items:RiotUpperItemType[], base_items:RiotBaseItemType[]}>("/api/items/");
+        const response = await axios.get<{upper_items:RiotUpperItemType[], base_items:RiotBaseItemType[]}>("/api/item/");
         return response.data;
     }
 )
@@ -112,7 +112,7 @@ export const fetchItems = createAsyncThunk(
 export const fetchAugments = createAsyncThunk(
     "augment/fetchAugments",
     async()=>{
-        const response = await axios.get<RiotAugmentType[]>("/api/augments/");
+        const response = await axios.get<RiotAugmentType[]>("/api/riotanalysisapp/augment/");
         return response.data;
     }
 )
@@ -128,7 +128,7 @@ export const fetchAugmentsRank = createAsyncThunk(
 export const fetchTraits = createAsyncThunk(
     "trait/fetchTraits",
     async()=>{
-        const response = await axios.get<RiotTraitType[]>("/api/traits/");
+        const response = await axios.get<RiotTraitType[]>("/api/riotanalysisapp/trait/");
         return response.data;
     }
 )
@@ -136,7 +136,7 @@ export const fetchTraits = createAsyncThunk(
 export const fetchTrait = createAsyncThunk(
     "trait/fetchTrait",
     async(id:number) => {
-        const response = await axios.post<RiotTraitType>("/api/trait/",id)
+        const response = await axios.post<RiotTraitType>("/api/riotanalysisapp/trait/",id)
         return response.data;
     }
 )
@@ -144,7 +144,7 @@ export const fetchTrait = createAsyncThunk(
 export const fetchChampions = createAsyncThunk(
     "champion/fetchChampions",
     async()=>{
-        const response = await axios.get<RiotChampionType[]>("/api/champions/");
+        const response = await axios.get<RiotChampionType[]>("/api/riotanalysisapp/champion/");
         return response.data;
     }
 )
@@ -155,7 +155,24 @@ export const riotAPI = createSlice({
     reducers:{
         fetchAugmentsRank: (state, action: PayloadAction<AugmentRank[]>) => {
             state.augmentRank = action.payload
-        }
+        },
+        // fetchAugments: (state, action: PayloadAction<RiotAugmentType[]>) => {
+		// 	console.log(action.payload)
+        //     state.augment.augments = action.payload;
+		// },
+        // fetchTraits: (state, action: PayloadAction<RiotTraitType[]>) => {
+		// 	console.log(action.payload)
+        //     state.trait.traits = action.payload;
+		// },
+        // fetchChampions: (state, action: PayloadAction<RiotChampionType[]>) => {
+		// 	console.log(action.payload)
+        //     state.champion.champions = action.payload;
+		// },
+        // fetchItems: (state, action: PayloadAction<{upper_items:RiotUpperItemType[], base_items:RiotBaseItemType[]}>) => {
+		// 	console.log(action.payload)
+        //     state.item.upperItems = action.payload.upper_items;
+        //     state.item.baseItems = action.payload.base_items;
+		// },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchItems.fulfilled, (state, action)=>{
@@ -172,14 +189,14 @@ export const riotAPI = createSlice({
         builder.addCase(fetchAugments.fulfilled, (state, action)=>{
             state.augment.augments = action.payload;
         });
-        builder.addCase(fetchItems.rejected, (state, action)=>{
+        builder.addCase(fetchAugments.rejected, (state, action)=>{
             state.augment.augments = [];
         });
 
         builder.addCase(fetchTraits.fulfilled, (state, action)=>{
             state.trait.traits = action.payload;
         });
-        builder.addCase(fetchItems.rejected, (state, action)=>{
+        builder.addCase(fetchTraits.rejected, (state, action)=>{
             state.trait.traits = [];
         });
 
