@@ -6,8 +6,9 @@ import Header from '../../component/Header/Header';
 import ItemInfo from '../../component/ItemInfo/ItemInfo';
 import DecInfo from '../../component/DecInfo/DecInfo';
 import AugmentInfo from '../../component/AugmentInfo/AugmentInfo';
-import { fetchAugments, fetchChampions, fetchItems, fetchTraits, selectAPI } from '../../store/slices/riotAPI';
+import { fetchAugments, fetchChampions, fetchItems, fetchTraits, RiotAugmentType, RiotTraitType, RiotUpperItemType, selectAPI } from '../../store/slices/riotAPI';
 import { useSelector } from 'react-redux';
+import TraitInfo from '../../component/TraitInfo/TraitInfo';
 
 function Explanation(){
 
@@ -28,15 +29,34 @@ function Explanation(){
     return(
         <div className='page'>
             <Header />
-            <ItemInfo itemName="itemName" itemImg="itemImg" itemDetail="itemDetail" itemCombination={dd} />
             <DecInfo decName={dd} decImg={dd} decDetailUnit={dd} decDetailUnitImg={dd} decInfo="decInfo"/>
             <AugmentInfo augmentName="augmentName" augmentImg="augmentImg" augmentInfo="augmentInfo"/>
-            <div>
-                <p>augment:{augment[0].name}</p>
-                <p>upperitem:{upperitem[0].name}</p>
-                <p>baseitem:{baseitem[0].name}</p>
-                <p>champion:{champion[0].name}</p>
-                <p>trait:{trait[0].name}</p>
+            <div className = 'trait-info-box'>
+                {
+                    trait.map((e:RiotTraitType)=>{
+                        return(
+                            <TraitInfo traitDetail={e.info} traitImg = {e.img} traitName = {e.name} champion_list={champion}/>
+                        )
+                    })
+                }
+            </div>
+            <div className = 'item-info-box'>
+                {
+                    upperitem.map((e:RiotUpperItemType)=>{
+                        return (
+                            <ItemInfo itemName={e.name} itemDetail = {e.info} itemImg = {e.img} itemCombination = {e.baseItems} base_item_list={baseitem}/>
+                        )
+                    })
+                }
+            </div>
+            <div className = 'augment-info-box'>
+                {
+                    augment.map((e:RiotAugmentType)=>{
+                        return (
+                            <AugmentInfo augmentImg={e.img} augmentInfo={e.info} augmentName={e.name} />
+                        )
+                    })
+                }
             </div>
         </div>
     );

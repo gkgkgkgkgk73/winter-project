@@ -1,37 +1,51 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './Header.css';
 import { useNavigate } from 'react-router-dom';
+import DropDown from '../DropDown/DropDown';
+import styled, { css } from 'styled-components';
 
 function Header(){
-    const navigate = useNavigate();
-    const onClickExplanationHandler = () => {
-        navigate('/');
+
+
+    const [isOpen, setIsOpen] = useState(false);
+    // const [explanationIsOpen, explanationRef, explanationHandler] = DropDown(false);
+    const explanationHandler = () => {
+        setIsOpen(!isOpen)
     }
-    const onClickDecInfoHandler = () => {
-        navigate('/DecInfo');
-    }
-    const onClickAugmentsHandler = () => {
-        navigate('/augmentstat');
-    }
-    const onClickSuggestionHandler = () => {
-        navigate('/Suggestion');
-    }
+    
     const onClickLogoHandler = () => {
-        navigate('/');
+        return navigate('/')
     }
+    const navigate = useNavigate();
+
     return (
         <div className='header'>
             <div className='logo'>
                 <text onClick={onClickLogoHandler}>롤체 정보</text>
             </div>
-            <div className='page-list'>
-                <button id = 'navigate-btn' onClick={onClickExplanationHandler}>롤토체스 설명</button>
-                <button id = 'navigate-btn' onClick={onClickDecInfoHandler}>롤토체스 순위 덱 알아보기</button>
-                <button id = 'navigate-btn' onClick={onClickAugmentsHandler}>롤토체스 승률 높은 증강체 알아보기</button>
-                <button id = 'navigate-btn' onClick={onClickSuggestionHandler}>건의사항</button>
-            </div>
+            <ul className='page-list'>
+                <button id = 'navigate-btn' onClick={explanationHandler}>롤토체스 설명</button>
+                {isOpen?
+                    <ul id='dropdown-menu' >
+                        <li>
+                            <a id = 'navigate-btn' href='#trait-info-box'>
+                                특성
+                            </a>
+                        </li>
+                    </ul>
+                    :<></>
+                }
+                {/* <Link id = 'navigate-btn' to='/decinfo'>롤토체스 순위 덱 알아보기</Link>
+                <Link id = 'navigate-btn' to='/augmentstat'>롤토체스 승률 높은 증강체 알아보기</Link>
+                <Link id = 'navigate-btn' to='/suggestion'>건의사항</Link> */}
+            </ul>
+            <ul>
+                <li></li>
+            </ul>
         </div>
     );
+    
 }
 
 export default Header;
+

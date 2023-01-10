@@ -90,7 +90,7 @@ const initialState:BasicGameInfo= {
 }
 
 export const fetchItems = createAsyncThunk(
-    "item/fetchItems",
+    "riotAPIs/fetchItems",
     async()=>{
         const response = await axios.get<{upper_items:RiotUpperItemType[], base_items:RiotBaseItemType[]}>("/api/items/");
         return response.data;
@@ -98,7 +98,7 @@ export const fetchItems = createAsyncThunk(
 )
 
 export const fetchAugments = createAsyncThunk(
-    "augment/fetchAugments",
+    "riotAPIs/fetchAugments",
     async()=>{
         const response = await axios.get<RiotAugmentType[]>("/api/augments/");
         return response.data;
@@ -106,7 +106,7 @@ export const fetchAugments = createAsyncThunk(
 )
 
 export const fetchTraits = createAsyncThunk(
-    "trait/fetchTraits",
+    "riotAPIs/fetchTraits",
     async()=>{
         const response = await axios.get<RiotTraitType[]>("/api/traits/");
         return response.data;
@@ -114,7 +114,7 @@ export const fetchTraits = createAsyncThunk(
 )
 
 export const fetchTrait = createAsyncThunk(
-    "trait/fetchTrait",
+    "riotAPIs/fetchTrait",
     async(id:number) => {
         const response = await axios.post<RiotTraitType>("/api/trait/",id)
         return response.data;
@@ -122,7 +122,7 @@ export const fetchTrait = createAsyncThunk(
 )
 
 export const fetchChampions = createAsyncThunk(
-    "champion/fetchChampions",
+    "riotAPIs/fetchChampions",
     async()=>{
         const response = await axios.get<RiotChampionType[]>("/api/champions/");
         return response.data;
@@ -139,6 +139,7 @@ export const riotAPI = createSlice({
         builder.addCase(fetchItems.fulfilled, (state, action)=>{
             state.item.upperItems = action.payload.upper_items;
             state.item.baseItems = action.payload.base_items;
+            return state
         });
         builder.addCase(fetchItems.rejected, (state, action)=>{
             state.item = {
@@ -149,23 +150,29 @@ export const riotAPI = createSlice({
 
         builder.addCase(fetchAugments.fulfilled, (state, action)=>{
             state.augment.augments = action.payload;
+            return state
         });
         builder.addCase(fetchItems.rejected, (state, action)=>{
             state.augment.augments = [];
+            return state
         });
 
         builder.addCase(fetchTraits.fulfilled, (state, action)=>{
             state.trait.traits = action.payload;
+            return state
         });
         builder.addCase(fetchItems.rejected, (state, action)=>{
             state.trait.traits = [];
+            return state
         });
 
         builder.addCase(fetchChampions.fulfilled, (state, action)=>{
             state.champion.champions = action.payload;
+            return state
         });
         builder.addCase(fetchChampions.rejected, (state, action)=>{
             state.champion.champions= [];
+            return state
         });
 
     }
