@@ -13,23 +13,19 @@ import TraitInfo from '../../component/TraitInfo/TraitInfo';
 function Explanation(){
 
     const dispatch = useDispatch<AppDispatch>();
-    // const [augment, setAugment] = useState<RiotAugmentType[] | undefined>();
-    // const [upperItem, setUpperItem] = useState<RiotUpperItemType[] | undefined>()
-    // const [baseItem, setBaseItem] = useState<RiotBaseItemType[] | undefined>()
-    // const [champion, setChampion] = useState<RiotChampionType[] | undefined>()
-    // const [trait, setTrait] = useState<RiotTraitType[] | undefined>();
-    let augment;
-    let champion;
-    let item;
-    let trait;
+    const trait = useSelector(selectAPI).trait;
+    const champion = useSelector(selectAPI).champion;
+    const upperitem = useSelector(selectAPI).item.upperitem;
+    const baseitem = useSelector(selectAPI).item.baseitem;
+    const augment = useSelector(selectAPI).augment;
 
     const dd = [""]
     useEffect(()=>{
         async function fetchAll(){
-            augment = await (await dispatch(fetchAugments())).payload
-            champion = await (await dispatch(fetchChampions())).payload
-            item = await (await dispatch(fetchItems())).payload
-            trait = await (await dispatch(fetchTraits())).payload
+            await dispatch(fetchAugments())
+            await dispatch(fetchChampions())
+            await dispatch(fetchItems())
+            await dispatch(fetchTraits())
             console.log(augment)
         }
         fetchAll()
