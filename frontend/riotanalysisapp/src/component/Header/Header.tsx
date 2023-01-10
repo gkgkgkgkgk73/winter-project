@@ -11,7 +11,7 @@ function Header(){
         navigate('/DecInfo');
     }
     const onClickAugmentsHandler = () => {
-        navigate('/Augments');
+        navigate('/augmentstat');
     }
     const onClickSuggestionHandler = () => {
         navigate('/Suggestion');
