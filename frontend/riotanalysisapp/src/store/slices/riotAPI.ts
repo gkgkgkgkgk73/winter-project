@@ -66,11 +66,22 @@ export interface AugmentState {
     augments:RiotAugmentType[];
 }
 
+export interface AugmentRank {
+    rank:number;
+    augmentName:string;
+    img:string;
+    winRate:number;
+    pickRate:number;
+}
+
+
+
 export interface BasicGameInfo {
     item:ItemState;
     champion:ChampionState;
     augment:AugmentState;
     trait:TraitState;
+    augmentRank:AugmentRank[];
 }
 
 const initialState:BasicGameInfo= {
@@ -86,7 +97,8 @@ const initialState:BasicGameInfo= {
     },
     trait:{
         traits:[]
-    }
+    },
+    augmentRank:[],
 }
 
 export const fetchItems = createAsyncThunk(
@@ -101,6 +113,14 @@ export const fetchAugments = createAsyncThunk(
     "augment/fetchAugments",
     async()=>{
         const response = await axios.get<RiotAugmentType[]>("/api/augments/");
+        return response.data;
+    }
+)
+
+export const fetchAugmentsRank = createAsyncThunk(
+    "augment/fetchAugmentsRank",
+    async()=>{
+        const response = await axios.get<AugmentRank[]>("/api/augmentstat/");
         return response.data;
     }
 )
@@ -133,7 +153,9 @@ export const riotAPI = createSlice({
     name:'riotAPIs',
     initialState,
     reducers:{
-        
+        fetchAugmentsRank: (state, action: PayloadAction<AugmentRank[]>) => {
+            state.augmentRank = action.payload
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(fetchItems.fulfilled, (state, action)=>{
