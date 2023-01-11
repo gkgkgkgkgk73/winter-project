@@ -1,6 +1,7 @@
 import os
 import json
 import pandas as pd
+import matplotlib.pyplot as plt
 
 from pathlib import Path
 import time
@@ -49,30 +50,53 @@ for query in queryset:
 df = pd.DataFrame(total_result, columns = champion_name_list)
 points = df.values
 
-kmeans = KMeans(n_clusters = 10).fit(points)
+# elbow method 시각화: 특정한 구간이 보이진 않지만 12개?
+# --------------------------------------------------
+# distortions = []
+# K = range(1, 20)
+# for k in K:
+#     kmeans = KMeans(n_clusters = k).fit(points)
+#     distortions.append(kmeans.inertia_)
+
+# plt.figure(figsize=(16,8))
+# plt.plot(K, distortions, 'bx-')
+# plt.xlabel('k')
+# plt.ylabel('Distortion')
+# plt.title('The Elbow Method showing the optimal k')
+# plt.show()
+
+kmeans = KMeans(n_clusters = 12).fit(points)
 centers = kmeans.cluster_centers_
 new_centers = []
-
 for center in centers:
     subresult = []
     for number in center:
-        # if number < 0.2: num = 0
-        # elif number > 0.8: num = 1
-        # else: num = number
+        if number < 0.2: num = 0
+        elif number > 0.8: num = 1
+        else: num = number
         num = number
         subresult.append(num)
     new_centers.append(subresult)
     # num digit 줄이기
 
-for j in range(10):
-    for i in range(59):
-        if new_centers[j][i] > 0:
-            print(str(new_centers[j][i]) + " " + champion_name_list[i])
+# for j in range(12):
+#     main_champions = []
+#     for i in range(59):
+#         if new_centers[j][i] > 0.4:
+#             main_champions.append(champion_name_list[i])
 
-            
-    print('------------------------\n')
+#     for champion in main_champions:
+#         Champion.objects.all('values')
 
+#     print("#" + str(j+1) + "th " + "main champions are: " + ' '.join(main_champions))    
     
+#     print('------------------------\n')
+
+#      # + 시너지 합 계산
+
+a = Champion.objects.all().values('id','champion_apiName')
+b = a.filter(Q(champion_apiName = 'TFT8_Leblanc'))
+print(b)
 
 
 
