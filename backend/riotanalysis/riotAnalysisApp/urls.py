@@ -8,5 +8,5 @@ urlpatterns = [
     path('augment/', views.get_augment_info, name='augment/'),
     path('champion/', views.get_champion_info, name='champion/'),
     path('trait/<int:trait_id>/', views.get_trait_detail, name='get_trait_detail/'),
-    path('augmentstat/',views.get_augment_stat, name='augmentstat/')
+    # path('augmentstat/',views.get_augment_stat, name='augmentstat/')
 ]

@@ -26,15 +26,12 @@ function Explanation(){
             await dispatch(fetchChampions())
             await dispatch(fetchItems())
             await dispatch(fetchTraits())
-            console.log(augment)
         }
         fetchAll()
     },[])
     return(
         <div className='page'>
             <Header />
-            <DecInfo decName={dd} decImg={dd} decDetailUnit={dd} decDetailUnitImg={dd} decInfo="decInfo"/>
-            <AugmentInfo augmentName="augmentName" augmentImg="augmentImg" augmentInfo="augmentInfo"/>
             <div className = 'trait-info-box'>
                 {
                     trait.map((e:RiotTraitType)=>{

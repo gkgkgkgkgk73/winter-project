@@ -104,7 +104,7 @@ const initialState:BasicGameInfo= {
 export const fetchItems = createAsyncThunk(
     "riotAPIs/fetchItems",
     async()=>{
-        const response = await axios.get<{upper_items:RiotUpperItemType[], base_items:RiotBaseItemType[]}>("/api/item/");
+        const response = await axios.get<{upper_items:RiotUpperItemType[], base_items:RiotBaseItemType[]}>("/api/riotanalysisapp/item/");
         return response.data;
     }
 )
