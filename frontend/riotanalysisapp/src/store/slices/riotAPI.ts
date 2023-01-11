@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "..";
+import ItemInfo from "../../component/ItemInfo/ItemInfo";
+import { stat } from "fs";
 
 export interface RiotUpperItemType{
     id:number;
@@ -102,7 +104,7 @@ const initialState:BasicGameInfo= {
 }
 
 export const fetchItems = createAsyncThunk(
-    "riotAPIs/fetchItems",
+    "riotAPI/fetchItems",
     async()=>{
         const response = await axios.get<{upper_items:RiotUpperItemType[], base_items:RiotBaseItemType[]}>("/api/riotanalysisapp/item/");
         return response.data;
@@ -110,7 +112,7 @@ export const fetchItems = createAsyncThunk(
 )
 
 export const fetchAugments = createAsyncThunk(
-    "riotAPIs/fetchAugments",
+    "riotAPI/fetchAugments",
     async()=>{
         const response = await axios.get<RiotAugmentType[]>("/api/riotanalysisapp/augment/");
         return response.data;
@@ -126,7 +128,7 @@ export const fetchAugmentsRank = createAsyncThunk(
 )
 
 export const fetchTraits = createAsyncThunk(
-    "riotAPIs/fetchTraits",
+    "riotAPI/fetchTraits",
     async()=>{
         const response = await axios.get<RiotTraitType[]>("/api/riotanalysisapp/trait/");
         return response.data;
@@ -134,15 +136,15 @@ export const fetchTraits = createAsyncThunk(
 )
 
 export const fetchTrait = createAsyncThunk(
-    "riotAPIs/fetchTrait",
+    "riotAPI/fetchTrait",
     async(id:number) => {
-        const response = await axios.post<RiotTraitType>("/api/riotanalysisapp/trait/",id)
+        const response = await axios.post<RiotTraitType>(`/api/riotanalysisapp/trait/${id}`)
         return response.data;
     }
 )
 
 export const fetchChampions = createAsyncThunk(
-    "riotAPIs/fetchChampions",
+    "riotAPI/fetchChampions",
     async()=>{
         const response = await axios.get<RiotChampionType[]>("/api/riotanalysisapp/champion/");
         return response.data;
@@ -150,11 +152,31 @@ export const fetchChampions = createAsyncThunk(
 )
 
 export const riotAPI = createSlice({
-    name:'riotAPIs',
+    name:'riotAPI',
     initialState,
     reducers:{
         fetchAugmentsRank: (state, action: PayloadAction<AugmentRank[]>) => {
             state.augmentRank = action.payload
+            console.log(state)
+            return state
+        },
+        fetchAugments: (state, action: PayloadAction<RiotAugmentType[]>) => {
+            console.log("1")
+            state.augment.augments = action.payload
+            return state
+        },
+        fetchItems: (state, action: PayloadAction<{upper_items:RiotUpperItemType[], base_items:RiotBaseItemType[]}>) => {
+            state.item.upperItems = action.payload.upper_items;
+            state.item.baseItems = action.payload.base_items;
+            return state
+        },
+        fetchTraits: (state, action: PayloadAction<RiotTraitType[]>) => {
+            state.trait.traits = action.payload
+            return state
+        },
+        fetchChampions: (state, action: PayloadAction<RiotChampionType[]>) => {
+            state.champion.champions = action.payload
+            return state
         },
         // fetchAugments: (state, action: PayloadAction<RiotAugmentType[]>) => {
 		// 	console.log(action.payload)
@@ -178,7 +200,8 @@ export const riotAPI = createSlice({
         builder.addCase(fetchItems.fulfilled, (state, action)=>{
             state.item.upperItems = action.payload.upper_items;
             state.item.baseItems = action.payload.base_items;
-            return state
+            console.log(state.item.upperItems)
+            return state;
         });
         builder.addCase(fetchItems.rejected, (state, action)=>{
             state.item = {
@@ -188,30 +211,30 @@ export const riotAPI = createSlice({
         });
 
         builder.addCase(fetchAugments.fulfilled, (state, action)=>{
+            state.augment.augments = []
             state.augment.augments = action.payload;
-            return state
+            return state;
         });
         builder.addCase(fetchAugments.rejected, (state, action)=>{
             state.augment.augments = [];
-            return state
         });
 
         builder.addCase(fetchTraits.fulfilled, (state, action)=>{
+            state.trait.traits = []
             state.trait.traits = action.payload;
-            return state
+            return state;
         });
         builder.addCase(fetchTraits.rejected, (state, action)=>{
             state.trait.traits = [];
-            return state
         });
 
         builder.addCase(fetchChampions.fulfilled, (state, action)=>{
+            state.champion.champions = []
             state.champion.champions = action.payload;
-            return state
+            return state;
         });
         builder.addCase(fetchChampions.rejected, (state, action)=>{
             state.champion.champions= [];
-            return state
         });
 
     }
@@ -219,6 +242,10 @@ export const riotAPI = createSlice({
 })
 
 export const riotAPIActions = riotAPI.actions;
-export const selectAPI = (state:RootState) => state.riotAPI;
+export const selectaugment = (state:RootState) => state.riotAPI.augment;
+export const selecttrait = (state:RootState) => state.riotAPI.trait;
+export const selectchampion = (state:RootState) => state.riotAPI.champion;
+export const selectupperitems = (state:RootState) => state.riotAPI.item.upperItems;
+export const selectbaseitems = (state:RootState) => state.riotAPI.item.baseItems;
 
 export default riotAPI.reducer;

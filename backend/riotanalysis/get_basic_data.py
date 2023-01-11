@@ -14,14 +14,19 @@ resp = requests.get(url=url)
 data = resp.json()
 data_items = []
 
+def fix_img_url(img_url):
+    fixed_url = img_url[:-4] + '.png'
+    return fixed_url
+
 def get_basic_items_info():
     for d in data['items']:
         if '_Item_' in d['apiName']:
             if not d['from']:
+                fix_imgurl = fix_img_url(icon_pre_url+d['icon'].lower())
                 BaseItem.objects.create(
                     item_id = d['id'],
                     item_name = d['name'],
-                    item_img = icon_pre_url+d['icon'].lower(),
+                    item_img = fix_imgurl,
                     item_info = d['desc'],                   
                     item_apiName = d['apiName'],
                     item_effect = d['effects']
@@ -29,10 +34,11 @@ def get_basic_items_info():
     for d in data['items']:
         if '_Item_' in d['apiName']:
             if d['from']:
+                fix_imgurl = fix_img_url(icon_pre_url+d['icon'].lower())
                 new_data = UpperItem.objects.create(
                     item_id = d['id'],
                     item_name = d['name'],
-                    item_img = icon_pre_url+d['icon'].lower(),
+                    item_img = fix_imgurl,
                     item_info = d['desc'],                   
                     item_apiName = d['apiName'],
                     item_effect = d['effects'],
@@ -54,11 +60,12 @@ def get_basic_champions_info():
         for c in d['champions']:
             if c['traits']:
                 if Champion.objects.filter(champion_apiName = c['apiName']).count() == 0:
+                    fix_imgurl = fix_img_url(icon_pre_url+c['icon'].lower())
                     champ = Champion.objects.create(
                         champion_apiName = c['apiName'],
                         champion_variables = {'variables' : c['ability']['variables']},
                         champion_name = c['name'],
-                        champion_img = icon_pre_url+c['icon'].lower(),
+                        champion_img = fix_imgurl,
                         champion_info = c['ability']['desc'],
                         champion_stats = c['stats'],
                         champion_cost = c['cost']
@@ -74,10 +81,11 @@ def get_basic_traits_info():
     for d in trait_list:
         for t in d['traits']:
             if 'Set8_' in t['apiName']:
+                fix_imgurl = fix_img_url(icon_pre_url+t['icon'].lower())
                 Trait.objects.create(
                         trait_name = t['name'],
                         trait_apiName = t['apiName'],
-                        trait_img = icon_pre_url+t['icon'].lower(),
+                        trait_img = fix_imgurl,
                         trait_effect = {'effect': t['effects']},
                         trait_info = t['desc']
                     )
@@ -85,10 +93,11 @@ def get_basic_traits_info():
 def get_basic_augments_info():
     for d in data['items']:
         if '_Augment_' in d['apiName']:
+            fix_imgurl = fix_img_url(icon_pre_url+d['icon'].lower())
             Augment.objects.create(
                 augment_id = d['id'],
                 augment_name = d['name'],
-                augment_img = icon_pre_url+d['icon'].lower(),
+                augment_img = fix_imgurl,
                 augment_info = d['desc'],                   
                 augment_apiName = d['apiName'],
                 augment_effect = d['effects']

@@ -6,7 +6,7 @@ import Header from '../../component/Header/Header';
 import ItemInfo from '../../component/ItemInfo/ItemInfo';
 import DecInfo from '../../component/DecInfo/DecInfo';
 import AugmentInfo from '../../component/AugmentInfo/AugmentInfo';
-import { fetchAugments, fetchChampions, fetchItems, fetchTraits, selectAPI } from '../../store/slices/riotAPI';
+import { fetchAugments, fetchChampions, fetchItems, fetchTraits,  } from '../../store/slices/riotAPI';
 import { useSelector } from 'react-redux';
 
 function AugmentStat(){

@@ -6,29 +6,34 @@ import Header from '../../component/Header/Header';
 import ItemInfo from '../../component/ItemInfo/ItemInfo';
 import DecInfo from '../../component/DecInfo/DecInfo';
 import AugmentInfo from '../../component/AugmentInfo/AugmentInfo';
-import { AugmentState, RiotChampionType, RiotAugmentType, RiotBaseItemType, RiotUpperItemType, fetchAugments, fetchChampions, fetchItems, fetchTraits, selectAPI, RiotTraitType } from '../../store/slices/riotAPI';
+import { selecttrait, selectchampion, selectaugment, selectbaseitems, selectupperitems, AugmentState, RiotChampionType, RiotAugmentType, RiotBaseItemType, RiotUpperItemType, fetchAugments, fetchChampions, fetchItems, fetchTraits, RiotTraitType } from '../../store/slices/riotAPI';
 import { useSelector } from 'react-redux';
 import TraitInfo from '../../component/TraitInfo/TraitInfo';
 
 function Explanation(){
 
     const dispatch = useDispatch<AppDispatch>();
-    const trait = useSelector(selectAPI).trait.traits;
-    const champion = useSelector(selectAPI).champion.champions;
-    const upperitem = useSelector(selectAPI).item.upperItems;
-    const baseitem = useSelector(selectAPI).item.baseItems;
-    const augment = useSelector(selectAPI).augment.augments;
+    const trait = useSelector(selecttrait).traits;
+    const champion = useSelector(selectchampion).champions;
+    const upperitem = useSelector(selectupperitems);
+    const baseitem = useSelector(selectbaseitems);
+    const augment = useSelector(selectaugment).augments;
 
-    const dd = [""]
     useEffect(()=>{
-        async function fetchAll(){
-            await dispatch(fetchAugments())
-            await dispatch(fetchChampions())
-            await dispatch(fetchItems())
-            await dispatch(fetchTraits())
-        }
-        fetchAll()
+        dispatch(fetchAugments())
+        dispatch(fetchChampions())
+        dispatch(fetchItems())
+        dispatch(fetchTraits())
     },[])
+
+    useEffect(()=>{
+        console.log(trait)
+        console.log(champion)
+        console.log(upperitem)
+        console.log(baseitem)
+        console.log(augment)
+    },[])
+
     return(
         <div className='page'>
             <Header />
