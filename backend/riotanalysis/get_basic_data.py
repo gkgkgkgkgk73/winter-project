@@ -53,20 +53,21 @@ def get_basic_champions_info():
     for d in data['setData']:
         for c in d['champions']:
             if c['traits']:
-                champ = Champion.objects.create(
-                    champion_apiName = c['apiName'],
-                    champion_variables = {'variables' : c['ability']['variables']},
-                    champion_name = c['name'],
-                    champion_img = icon_pre_url+c['icon'].lower(),
-                    champion_info = c['ability']['desc'],
-                    champion_stats = c['stats'],
-                    champion_cost = c['cost']
-                )
-                for t in c['traits']:
-                    temp = Trait.objects.filter(trait_name = t)
-                    if temp:
-                        champ.traits.add(temp[0])
-                champ.save()
+                if Champion.objects.filter(champion_apiName = c['apiName']).count() == 0:
+                    champ = Champion.objects.create(
+                        champion_apiName = c['apiName'],
+                        champion_variables = {'variables' : c['ability']['variables']},
+                        champion_name = c['name'],
+                        champion_img = icon_pre_url+c['icon'].lower(),
+                        champion_info = c['ability']['desc'],
+                        champion_stats = c['stats'],
+                        champion_cost = c['cost']
+                    )
+                    for t in c['traits']:
+                        temp = Trait.objects.filter(trait_name = t)
+                        if temp:
+                            champ.traits.add(temp[0])
+                    champ.save()
     
 def get_basic_traits_info():
     trait_list = data['setData']
