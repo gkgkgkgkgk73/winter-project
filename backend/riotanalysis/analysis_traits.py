@@ -8,7 +8,7 @@ import time
 os.environ.setdefault("DJANGO_SETTINGS_MODULE","riotanalysis.settings")
 import django
 django.setup()
-from riotanalysisapp.models import MatchData, Champion
+from riotanalysisapp.models import MatchData, Champion, Trait
 from django.db.models import Q
 
 from sklearn.cluster import KMeans
@@ -65,7 +65,8 @@ points = df.values
 # plt.title('The Elbow Method showing the optimal k')
 # plt.show()
 
-kmeans = KMeans(n_clusters = 12).fit(points)
+num_cluster = 12
+kmeans = KMeans(n_clusters = num_cluster).fit(points)
 centers = kmeans.cluster_centers_
 new_centers = []
 for center in centers:
@@ -79,24 +80,77 @@ for center in centers:
     new_centers.append(subresult)
     # num digit 줄이기
 
-# for j in range(12):
-#     main_champions = []
-#     for i in range(59):
-#         if new_centers[j][i] > 0.4:
-#             main_champions.append(champion_name_list[i])
+# 순위, 승패여부, 시너지 그룹번호로 이루어진 DataFrame 생성
+labels = kmeans.labels_.tolist()
+query_set = MatchData.objects.all().values('placement')
+placements = []
+is_top4 = []
+for query in query_set:
+    placements.append(query['placement'])
+    top4 = False
+    if query['placement'] < 5:
+        top4 = True
+    is_top4.append(top4)
+dic = {'placement': placements, 'is_top4': is_top4, 'labels': labels}
+df = pd.DataFrame(dic)
+#print(df)
 
-#     for champion in main_champions:
-#         Champion.objects.all('values')
-
-#     print("#" + str(j+1) + "th " + "main champions are: " + ' '.join(main_champions))    
+main_champions_list = []
+for j in range(num_cluster):
+    main_champions = []
+    for i in range(59):
+        if new_centers[j][i] > 0.3:
+            main_champions.append(champion_name_list[i])
+    main_champions_list.append(main_champions)
     
-#     print('------------------------\n')
+    #print("#" + str(j+1) + "th " + "main champions are: " + ' '.join(main_champions))    
+    #print('------------------------\n')
 
-#      # + 시너지 합 계산
+    
+# 12 그룹의 챔피언들의 시너지의 합을 계산
+# 결과: 12개의 원소로 이루어진 list, 각 원소는 dictionary이고 trait id가 str 형식으로 key로 할당, value는 시너지 합
+trait_number_list = []
+for li in main_champions_list:
+    dic = dict()
+    for name in li:
+        query = Champion.objects.all().filter(Q(champion_apiName = name)).values('id')
+        champion_id = query[0]['id']
+        trait_query = Champion.objects.all().filter(Q(id = champion_id)).values('traits')
+        for trait in trait_query:
+            trait_id = trait['traits']
+            
+            if trait_id in dic:
+                dic[trait_id] += 1
+            else:
+                dic[trait_id] = 1
+    trait_number_list.append(dic)
 
-a = Champion.objects.all().values('id','champion_apiName')
-b = a.filter(Q(champion_apiName = 'TFT8_Leblanc'))
-print(b)
+trait_number_with_name = []
+for di in trait_number_list:
+    new_dict = dict()
+    keys = list(di)
+    for key in keys:
+        query = Trait.objects.all().filter(Q(id = key)).values('trait_name')
+        name = query[0]['trait_name']
+        new_dict[name] = di[key]
+    trait_number_with_name.append(new_dict)
 
+#정보 print
+# print("---------------------------------------------------------------------------------------------------------------------------------------------------------------")
+# num = 1
+# for traits in trait_number_with_name:
+#     print(str(num) + "th ")
+#     print(traits)
+#     print("---------------------------------------------------------------------------------------------------------------------------------------------------------------")
+#     num += 1
 
+# Todo: data -> labels에 따른 승률 데이터 추려볼 수도?
+group_by_win_rate_list = []
+for i in range(12):
+    df_new = df[df['labels'] == i]
+    df_true = df_new[df_new['is_top4'] == True]
+    win_rate = len(df_true) / len(df_new)
+    group_by_win_rate_list.append(win_rate)
 
+print(group_by_win_rate_list)
+print(main_champions_list)
