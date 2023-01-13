@@ -16,6 +16,10 @@
     justify-content: space-evenly;
 }
 
+.menu-list{
+    flex-direction: column;
+}
+
 #navigate-btn{
     background-color: transparent;
     border-style: none;

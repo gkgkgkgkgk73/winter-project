@@ -37,7 +37,7 @@ function Explanation(){
     return(
         <div className='page'>
             <Header />
-            <div className = 'trait-info-box'>
+            <div className = 'trait-info-box' id = 'trait-info-box'>
                 <text>특성 !!!!</text>
                 {
                     trait.map((e:RiotTraitType)=>{
@@ -47,7 +47,7 @@ function Explanation(){
                     })
                 }
             </div>
-            <div className = 'item-info-box'>
+            <div className = 'item-info-box' id = 'item-info-box'>
                 <text>아이템 !!!!</text>
                 {
                     upperitem.map((e:RiotUpperItemType)=>{
@@ -57,7 +57,7 @@ function Explanation(){
                     })
                 }
             </div>
-            <div className = 'augment-info-box'>
+            <div className = 'augment-info-box' id = 'augment-info-box'>
                 <text>증강체 !!!!</text>
                 {
                     augment.map((e:RiotAugmentType)=>{

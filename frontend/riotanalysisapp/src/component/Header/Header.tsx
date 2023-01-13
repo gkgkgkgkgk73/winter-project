@@ -24,23 +24,32 @@ function Header(){
                 <text onClick={onClickLogoHandler}>롤체 정보</text>
             </div>
             <ul className='page-list'>
-                <button id = 'navigate-btn' onClick={explanationHandler}>롤토체스 설명</button>
-                {isOpen?
-                    <ul id='dropdown-menu' >
-                        <li>
-                            <a id = 'navigate-btn' href='#trait-info-box'>
-                                특성
-                            </a>
-                        </li>
-                    </ul>
-                    :<></>
-                }
+                <div className = 'menu-list'>
+                    <button id = 'navigate-btn' onClick={explanationHandler}>롤토체스 설명</button>
+                    {isOpen?
+                        <ul id='dropdown-menu' >
+                            <li>
+                                <a id = 'navigate-btn' href='#trait-info-box'>
+                                    특성
+                                </a>
+                            </li>
+                            <li>
+                                <a id = 'navigate-btn' href='#item-info-box'>
+                                    아이템
+                                </a>
+                            </li>
+                            <li>
+                                <a id = 'navigate-btn' href='#augment-info-box'>
+                                    증강체
+                                </a>
+                            </li>
+                        </ul>
+                        :<></>
+                    }
+                </div>
                 {/* <Link id = 'navigate-btn' to='/decinfo'>롤토체스 순위 덱 알아보기</Link>
                 <Link id = 'navigate-btn' to='/augmentstat'>롤토체스 승률 높은 증강체 알아보기</Link>
                 <Link id = 'navigate-btn' to='/suggestion'>건의사항</Link> */}
-            </ul>
-            <ul>
-                <li></li>
             </ul>
         </div>
     );
