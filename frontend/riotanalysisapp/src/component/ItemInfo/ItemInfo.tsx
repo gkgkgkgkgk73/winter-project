@@ -12,13 +12,24 @@ export interface IProps {
 function ItemInfo(props:IProps) {
     return(
         <div className = "itemInfoBox">
-            <img src={props.itemImg}/>
+            <img id="item-img" src={props.itemImg}/>
             <text id="itemName">{props.itemName}</text>
-            <div className="itemCombinationBox">
-                {/* <img src={props.itemCombination[0]}/>
-                <text>+</text>
-                <img src={props.itemCombination[1]}/> */}
-            </div>
+            {
+                Object.keys(props.itemCombination).length==2?
+                    <div className="itemCombinationBox">
+                        <img id = "item-img" src={props.base_item_list.find(i => props.itemCombination[0] === i.id)?.img}/>
+                        <text>+</text>
+                        <img id = "item-img" src={props.base_item_list.find(i => props.itemCombination[1] === i.id)?.img}/>
+                    </div>
+                    :
+                    Object.keys(props.itemCombination).length == 1?
+                    <div className="itemCombinationBox">
+                        <img id = "item-img" src={props.base_item_list.find(i => props.itemCombination[0] === i.id)?.img}/>
+                        <text>+</text>
+                        <img id = "item-img" src={props.base_item_list.find(i => props.itemCombination[0] === i.id)?.img}/>
+                    </div>
+                    :<></>
+            }
             <text id="itemDetail">{props.itemDetail}</text>
         </div>
     );

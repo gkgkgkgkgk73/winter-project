@@ -1,0 +1,10 @@
+.augmentInfoBox{
+    flex-direction: column;
+}
+
+#augment-img{
+    height: 5rem;
+    width: 5rem;
+    margin: 1rem;
+    background-color: black;
+}

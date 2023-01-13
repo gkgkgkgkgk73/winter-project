@@ -1,0 +1,11 @@
+.itemInfoBox{
+    flex-direction: column;
+    border-style: solid;
+}
+
+#item-img{
+    height: 5rem;
+    width: 5rem;
+    margin: 1rem;
+    background-color: black;
+}

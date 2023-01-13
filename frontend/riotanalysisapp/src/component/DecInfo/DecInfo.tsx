@@ -15,7 +15,7 @@ function DecInfo(props:IProps) {
                     return <text id="decName">{e}</text>
                 })}
                 {props.decImg.map((e)=>{
-                    return <img src={e}/>
+                    return <img id="dec-img" src={e}/>
                 })}
             </div>
             <text id="unitInfoTitle">유닛 종류</text>
@@ -24,7 +24,7 @@ function DecInfo(props:IProps) {
                     return <text id="decUnitName">{e}</text>
                 })}
                 {props.decDetailUnitImg.map((e)=>{
-                    return <img src={e}/>
+                    return <img id = 'dec-detail-unit-img'src={e}/>
                 })}
             </div>
             <text id="decInfo">{props.decInfo}</text>

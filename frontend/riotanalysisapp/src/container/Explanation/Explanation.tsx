@@ -32,21 +32,23 @@ function Explanation(){
         console.log(upperitem)
         console.log(baseitem)
         console.log(augment)
-    },[])
+    },[trait, champion, upperitem, baseitem, augment])
 
     return(
         <div className='page'>
             <Header />
             <div className = 'trait-info-box'>
+                <text>특성 !!!!</text>
                 {
                     trait.map((e:RiotTraitType)=>{
                         return(
-                            <TraitInfo traitDetail={e.info} traitImg = {e.img} traitName = {e.name} champion_list={champion}/>
+                            <TraitInfo traitDetail={e.info} traitImg = {e.img} traitName = {e.name} champion_list={champion} traitID={e.id}/>
                         )
                     })
                 }
             </div>
             <div className = 'item-info-box'>
+                <text>아이템 !!!!</text>
                 {
                     upperitem.map((e:RiotUpperItemType)=>{
                         return (
@@ -56,6 +58,7 @@ function Explanation(){
                 }
             </div>
             <div className = 'augment-info-box'>
+                <text>증강체 !!!!</text>
                 {
                     augment.map((e:RiotAugmentType)=>{
                         return (
