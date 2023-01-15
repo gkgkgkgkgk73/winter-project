@@ -16,8 +16,14 @@
     justify-content: space-evenly;
 }
 
-.menu-list{
+#menu-obj{
+    display: flex;
     flex-direction: column;
+}
+
+.menu-list{
+    display: flex;
+    flex-direction: row;
 }
 
 #navigate-btn{

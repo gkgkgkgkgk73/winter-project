@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './DecInfo.css';
 export interface IProps {
     decName:string[];
@@ -8,6 +8,8 @@ export interface IProps {
     decInfo:string;
 }
 function DecInfo(props:IProps) {
+    const [hover, setHover] = useState<string>('');
+
     return(
         <div className = "decInfoBox">
             <div className = "decNameNInfo">
@@ -24,7 +26,7 @@ function DecInfo(props:IProps) {
                     return <text id="decUnitName">{e}</text>
                 })}
                 {props.decDetailUnitImg.map((e)=>{
-                    return <img id = 'dec-detail-unit-img'src={e}/>
+                    return <img id = 'dec-detail-unit-img' src={e}/>
                 })}
             </div>
             <text id="decInfo">{props.decInfo}</text>
