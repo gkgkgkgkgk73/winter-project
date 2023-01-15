@@ -30,5 +30,9 @@ for summonerId in summonerIds:
   puuid = r.json()['puuid']
   puuids.append(puuid)
 
-print(puuid)
-
+s_puuids = pd.Series(puuids, index =range(len(puuids)))
+df = pd.concat([df, s_puuids], axis = 1)
+df.rename(columns = {0: 'puuid'}, inplace = True)
+df = df[['summonerId', 'summonerName', 'puuid','leaguePoints', 'rank', 'wins', 'losses',
+       'veteran', 'inactive', 'freshBlood', 'hotStreak']]
+df.to_csv("TFTMaterUserInfo.csv", index = False)
