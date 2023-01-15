@@ -15,7 +15,7 @@ upper = UpperItem.objects.all().values('item_id', 'item_name')
 id_name_dict = dict()
 for element in base:
     id = element['item_id']
-    name = element['item_name']
+    name = element['item_name'] 
     id_name_dict[id] = name
 for element in upper:
     id = element['item_id']
