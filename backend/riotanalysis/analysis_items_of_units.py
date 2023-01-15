@@ -62,6 +62,7 @@ for name in champion_name_list:
         most_item_name_list.append(id_name_dict[item_id])
     most_item_champion_dict[name] = most_item_name_list
 
-for champion in champion_name_list:
-    a = ", ".join(most_item_champion_dict[champion])
-    print(champion + " " + a + "\n")
+# for champion in champion_name_list:
+#     a = ", ".join(most_item_champion_dict[champion])
+#     print(champion + " " + a + "\n")
+print(id_name_dict)

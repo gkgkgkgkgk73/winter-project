@@ -70,3 +70,11 @@ class MatchData(models.Model):
     traits = models.JSONField()
     units = models.JSONField()
     
+class ItemStat(models.Model):
+    champion_name = models.CharField(max_length=100,blank=True)
+    item_name = models.CharField(max_length=100,blank=True)
+    pick_count = models.IntegerField()
+    win_count = models.IntegerField()
+    pick_rate = models.FloatField()
+    win_rate = models.FloatField()
+
