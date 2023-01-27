@@ -1,32 +1,54 @@
 .header{
-    height: 15vh;
-    width: 100vw;
+    height: fit-content;
     display: flex;
-    background-color:cornflowerblue;
+    background-color:#4392B4;
     flex-direction: column;
 }
 .logo{
     margin: 0.5vw;
     font-size: 5vh;
+    color: white;
+    opacity: 0.8;
+    display: flex;
+    padding-left: 10px;
+    justify-content: space-between;    
 }
 .page-list{
-    margin-top: 10px;
     display: flex;
+    height: fit-content;
+    z-index: 1;
+    font-size: 3vh;
     flex-direction: row;
     justify-content: space-evenly;
+    background-color: #2D80A4;
+    color: white;
 }
 
 #menu-obj{
     display: flex;
+    height: fit-content;
     flex-direction: column;
+    background-color: #2D80A4;
+    color: white;
 }
 
 .menu-list{
-    display: flex;
+    height: fit-content;
+    display: inline-flex;
     flex-direction: row;
+    background-color: #2D80A4;
+    color: white;
 }
 
+#dropdown-menu{
+    list-style: none;
+    height: fit-content;
+    padding-left: 0px;
+}
 #navigate-btn{
     background-color: transparent;
     border-style: none;
+    background-color: #2D80A4;
+    color: white;
+    text-decoration: none;
 }

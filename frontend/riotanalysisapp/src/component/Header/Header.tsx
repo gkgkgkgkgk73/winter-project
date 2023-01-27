@@ -8,6 +8,10 @@ function Header(){
 
 
     const [isOpen, setIsOpen] = useState(false);
+    const [searchID, setSearchID] = useState('');
+    const searchIDHandler = ()=>{
+        //search 처리 함수
+    }
     // const [explanationIsOpen, explanationRef, explanationHandler] = DropDown(false);
     const explanationHandler = () => {
         setIsOpen(!isOpen)
@@ -21,7 +25,11 @@ function Header(){
     return (
         <div className='header'>
             <div className='logo'>
-                <text onClick={onClickLogoHandler}>롤체 정보</text>
+                <text onClick={onClickLogoHandler}>TFTInfo</text>
+                <form onSubmit={searchIDHandler}>
+                    <input id='search-id-window' value={searchID} onChange={(e)=>setSearchID(e.target.value)}></input>
+                    <button type='submit'>검색</button>
+                </form>
             </div>
             <ul className='page-list'>
                 <div className = 'menu-list'>
