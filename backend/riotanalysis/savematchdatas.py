@@ -35,9 +35,9 @@ api_key = get_secret("RIOT_API_KEY")
 #----------------------------------------------------------------------------------------------
 data = pd.read_csv('TFTMasterUserInfo.csv') # 처음 시작할 당시 마스터 티어 유저들 데이터
 puuids = data[['puuid']].values.tolist()
-print(len(puuids))
+print(puuids[0][0])
 
-for j in range(660, len(puuids)):
+for j in range(480, len(puuids)):
     
     # for test
     # if j > 0:
@@ -48,7 +48,7 @@ for j in range(660, len(puuids)):
     get_match_id_url = "https://asia.api.riotgames.com/tft/match/v1/matches/by-puuid/" + puuid + "/ids?start=0&count=20&api_key=" + api_key
     r = requests.get(get_match_id_url)
     recentMatchIds = r.json()
-
+    print(recentMatchIds)
     for i in range(len(recentMatchIds)):
         
         # for test

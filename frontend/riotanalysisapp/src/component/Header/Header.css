@@ -3,6 +3,7 @@
     display: flex;
     background-color:#4392B4;
     flex-direction: column;
+    margin-bottom: 0;
 }
 .logo{
     margin: 0.5vw;
@@ -17,38 +18,50 @@
     display: flex;
     height: fit-content;
     z-index: 1;
-    font-size: 3vh;
+    font-size: 2vh;
+    align-items: center;
     flex-direction: row;
     justify-content: space-evenly;
     background-color: #2D80A4;
     color: white;
+    margin-bottom: 0;
 }
 
 #menu-obj{
     display: flex;
     height: fit-content;
+    align-items: center;
     flex-direction: column;
+    width: 17vw;
     background-color: #2D80A4;
     color: white;
 }
 
 .menu-list{
+    align-items: center;
     height: fit-content;
     display: inline-flex;
     flex-direction: row;
+    justify-content: space-between;
     background-color: #2D80A4;
     color: white;
+    width: fit-content;
 }
 
 #dropdown-menu{
     list-style: none;
     height: fit-content;
+    justify-content: flex-start;
     padding-left: 0px;
 }
+
 #navigate-btn{
     background-color: transparent;
     border-style: none;
+    height: fit-content;
+    width: fit-content;
     background-color: #2D80A4;
     color: white;
     text-decoration: none;
+    font-size:1.5vh;
 }

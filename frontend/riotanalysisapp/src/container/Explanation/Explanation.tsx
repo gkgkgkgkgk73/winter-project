@@ -37,36 +37,47 @@ function Explanation(){
     return(
         <div className='page'>
             <Header />
-            <div className = 'trait-info-box' id = 'trait-info-box'>
-                <text>특성 !!!!</text>
-                {
-                    trait.map((e:RiotTraitType)=>{
-                        return(
-                            <TraitInfo traitDetail={e.info} traitImg = {e.img} traitName = {e.name} champion_list={champion} traitID={e.id}/>
-                        )
-                    })
-                }
-            </div>
-            <div className = 'item-info-box' id = 'item-info-box'>
-                <text>아이템 !!!!</text>
-                {
-                    upperitem.map((e:RiotUpperItemType)=>{
-                        return (
-                            <ItemInfo itemName={e.name} itemDetail = {e.info} itemImg = {e.img} itemCombination = {e.baseItems} base_item_list={baseitem}/>
-                        )
-                    })
-                }
-            </div>
-            <div className = 'augment-info-box' id = 'augment-info-box'>
-                <text>증강체 !!!!</text>
-                {
-                    augment.map((e:RiotAugmentType)=>{
-                        return (
-                            <AugmentInfo augmentImg={e.img} augmentInfo={e.info} augmentName={e.name} />
-                        )
-                    })
-                }
-            </div>
+            <div className='content'>
+                <div id='title'>
+                    <text className="title-text">TFT 시즌 8 정보</text>
+                </div>
+                <div className = 'trait-info-box' id = 'trait-info-box'>
+                    <div id='sub-title'>
+                        <text className="title-text">시너지</text>
+                    </div>
+                    {
+                        trait.map((e:RiotTraitType)=>{
+                            return(
+                                <TraitInfo traitDetail={e.info} traitImg = {e.img} traitName = {e.name} champion_list={champion} traitID={e.id}/>
+                            )
+                        })
+                    }
+                </div>
+                <div className = 'item-info-box' id = 'item-info-box'>
+                    <div id='sub-title'>
+                        <text className="title-text">아이템</text>
+                    </div>
+                    {
+                        upperitem.map((e:RiotUpperItemType)=>{
+                            return (
+                                <ItemInfo itemName={e.name} itemDetail = {e.info} itemImg = {e.img} itemCombination = {e.baseItems} base_item_list={baseitem}/>
+                            )
+                        })
+                    }
+                </div>
+                <div className = 'augment-info-box' id = 'augment-info-box'>
+                    <div id='sub-title'>
+                        <text className="title-text">증강체</text>
+                    </div>
+                    {
+                        augment.map((e:RiotAugmentType)=>{
+                            return (
+                                <AugmentInfo augmentImg={e.img} augmentInfo={e.info} augmentName={e.name} />
+                            )
+                        })
+                    }
+                </div>
+                </div>
         </div>
     );
 }
