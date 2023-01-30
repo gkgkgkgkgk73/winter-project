@@ -6,7 +6,9 @@
     margin-bottom: 0;
 }
 .logo{
-    margin: 0.5vw;
+    margin-top: 0.5vw;
+    margin-left: 0.5vw;
+    margin-right: 0.5vw;
     font-size: 5vh;
     color: white;
     opacity: 0.8;
@@ -18,7 +20,7 @@
     display: flex;
     height: fit-content;
     z-index: 1;
-    font-size: 2vh;
+    font-size: 80%;
     align-items: center;
     flex-direction: row;
     justify-content: space-evenly;
@@ -53,6 +55,7 @@
     height: fit-content;
     justify-content: flex-start;
     padding-left: 0px;
+    padding-bottom: 5px;
 }
 
 #navigate-btn{
@@ -63,5 +66,5 @@
     background-color: #2D80A4;
     color: white;
     text-decoration: none;
-    font-size:1.5vh;
+    font-size:90%;
 }

@@ -4,6 +4,15 @@ import { RootState } from "..";
 import ItemInfo from "../../component/ItemInfo/ItemInfo";
 import { stat } from "fs";
 
+export interface UserInfoType{
+    id:string;
+    iconImg:string;
+    level:number;
+    matchHistory:JSON;
+    gameStat:JSON;
+    tier:string;
+    tierImg:string;
+}
 export interface RiotUpperItemType{
     id:number;
     name:string;
@@ -84,6 +93,7 @@ export interface BasicGameInfo {
     augment:AugmentState;
     trait:TraitState;
     augmentRank:AugmentRank[];
+    userinfo:UserInfoType[];
 }
 
 const initialState:BasicGameInfo= {
@@ -101,6 +111,8 @@ const initialState:BasicGameInfo= {
         traits:[]
     },
     augmentRank:[],
+    userinfo:[],
+
 }
 
 export const fetchItems = createAsyncThunk(
@@ -151,6 +163,12 @@ export const fetchChampions = createAsyncThunk(
     }
 )
 
+export const fetchUserInfo = createAsyncThunk("riotAPI/fetchUserInfo",
+async(userid:string)=>{
+    const response = await axios.post<UserInfoType>("/api/riotanalysisapp/userinfo/");
+    return response.data;
+})
+
 export const riotAPI = createSlice({
     name:'riotAPI',
     initialState,
@@ -176,6 +194,11 @@ export const riotAPI = createSlice({
         },
         fetchChampions: (state, action: PayloadAction<RiotChampionType[]>) => {
             state.champion.champions = action.payload
+            return state
+        },
+        fetchUserInfo:(state, action: PayloadAction<UserInfoType>) => {
+            state.userinfo=[];
+            state.userinfo.push(action.payload);
             return state
         },
         // fetchAugments: (state, action: PayloadAction<RiotAugmentType[]>) => {
@@ -237,6 +260,14 @@ export const riotAPI = createSlice({
             state.champion.champions= [];
         });
 
+        builder.addCase(fetchUserInfo.fulfilled, (state, action)=>{
+            state.userinfo = []
+            state.userinfo.push(action.payload);
+            return state;
+        });
+        builder.addCase(fetchUserInfo.rejected, (state, action)=>{
+            state.userinfo= [];
+        });
     }
 
 })
@@ -247,5 +278,5 @@ export const selecttrait = (state:RootState) => state.riotAPI.trait;
 export const selectchampion = (state:RootState) => state.riotAPI.champion;
 export const selectupperitems = (state:RootState) => state.riotAPI.item.upperItems;
 export const selectbaseitems = (state:RootState) => state.riotAPI.item.baseItems;
-
+export const selectuserinfo = (state:RootState) => state.riotAPI.userinfo;
 export default riotAPI.reducer;

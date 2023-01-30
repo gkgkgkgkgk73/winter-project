@@ -37,7 +37,7 @@ data = pd.read_csv('TFTMasterUserInfo.csv') # 처음 시작할 당시 마스터 
 puuids = data[['puuid']].values.tolist()
 print(puuids[0][0])
 
-for j in range(480, len(puuids)):
+for j in range(550, len(puuids)):
     
     # for test
     # if j > 0:

@@ -7,7 +7,7 @@ import styled, { css } from 'styled-components';
 function Header(){
 
 
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
     const [searchID, setSearchID] = useState('');
     const searchIDHandler = ()=>{
         //search 처리 함수
@@ -99,13 +99,18 @@ function Header(){
                                     </a>
                                 </li>
                                 <li>
-                                    <a id = 'navigate-btn'style={{paddingLeft:'5px'}} href='#augment-info-box'>
-                                        챔피언 별 아이템 승률 계산
+                                    <a id = 'navigate-btn' style={{paddingLeft:'5px'}} href='#augment-info-box'>
+                                        증강체 승률 계산
                                     </a>
                                 </li>
                                 <li>
                                     <a id = 'navigate-btn' style={{paddingLeft:'5px'}} href='#augment-info-box'>
-                                        가장 승률 높은 덱
+                                        챔피언 & 아이템 승률 계산
+                                    </a>
+                                </li>
+                                <li>
+                                    <a id = 'navigate-btn' style={{paddingLeft:'5px'}} href='#augment-info-box'>
+                                        사기주사위 확률 계산
                                     </a>
                                 </li>
                             </ul>
