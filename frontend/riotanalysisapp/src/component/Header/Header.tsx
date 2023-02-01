@@ -3,14 +3,19 @@ import './Header.css';
 import { useNavigate } from 'react-router-dom';
 import DropDown from '../DropDown/DropDown';
 import styled, { css } from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store';
+import { fetchUserInfo } from '../../store/slices/riotAPI';
 
 function Header(){
 
-
+    const dispatch = useDispatch<AppDispatch>();
     const [isOpen, setIsOpen] = useState(true);
     const [searchID, setSearchID] = useState('');
     const searchIDHandler = ()=>{
         //search 처리 함수
+        dispatch(fetchUserInfo(searchID))
+        navigate('/userinfo')
     }
     // const [explanationIsOpen, explanationRef, explanationHandler] = DropDown(false);
     const explanationHandler = () => {
@@ -21,6 +26,7 @@ function Header(){
         return navigate('/')
     }
     const navigate = useNavigate();
+
 
     return (
         <div className='header'>

@@ -8,5 +8,7 @@ urlpatterns = [
     path('augment/', views.get_augment_info, name='augment/'),
     path('champion/', views.get_champion_info, name='champion/'),
     path('trait/<int:trait_id>/', views.get_trait_detail, name='get_trait_detail/'),
+    path('userinfo/<str:target_id>', views.get_user_info, name='userinfo/'),
+    # path('dicestat/<str:target_champion>', views.get_dice_stat_info, name='dicestat/'),
     # path('augmentstat/',views.get_augment_stat, name='augmentstat/')
 ]

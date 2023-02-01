@@ -1,0 +1,18 @@
+.diceStatBox{
+    flex-direction: column;
+    border-style: solid;
+}
+
+#dec-img{
+    height: 5rem;
+    width: 5rem;
+    margin: 1rem;
+    background-color: black;
+}
+
+#dec-detail-unit-img{
+    height: 5rem;
+    width: 5rem;
+    margin: 1rem;
+    background-color: black;
+}
