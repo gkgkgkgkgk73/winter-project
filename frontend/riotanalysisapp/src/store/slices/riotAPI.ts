@@ -7,14 +7,18 @@ import { act } from "react-dom/test-utils";
 
 export interface UserInfoType{
     id:string;
-    iconImg:string;
+    iconImg:number;
     level:number;
     matchHistory:JSON;
     gameStat:JSON;
-    tier:string;
-    tierImg:string;
 }
 
+
+export interface DiceReqType{
+    type:number,
+    level:number,
+    name:string
+}
 export interface DiceStatType{
     champion_name:string;
     stat:number;
@@ -188,8 +192,8 @@ async(userid:string)=>{
 })
 
 export const fetchDiceStat = createAsyncThunk("riotAPI/fetchDiceStat",
-    async(champion_name:string)=>{
-        const response = await axios.post<DiceStatInfo>(`/api/riotanalysisapp/dicestat/${champion_name}`);
+    async(req:DiceReqType)=>{
+        const response = await axios.post<DiceStatInfo>(`/api/riotanalysisapp/dicestat/`,req);
         console.log(response.data)
         return response.data;
     }

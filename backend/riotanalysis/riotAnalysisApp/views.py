@@ -176,33 +176,56 @@ def get_trait_detail(request, trait_id):
 @csrf_exempt
 def get_user_info(request, target_id):
     if request.method == "POST":
-            print(target_id)
-            get_puuid_url = "https://kr.api.riotgames.com/tft/summoner/v1/summoners/by-name/"+ target_id + "?api_key=" + api_key
-            try:
+        print(target_id)
+        get_puuid_url = "https://kr.api.riotgames.com/tft/summoner/v1/summoners/by-name/"+ target_id + "?api_key=" + api_key
+        try:
+            r = requests.get(get_puuid_url)
+            
+            while r.status_code == 429:
+                time.sleep(5)
                 r = requests.get(get_puuid_url)
-                
-                while r.status_code == 429:
-                    time.sleep(5)
-                    r = requests.get(get_puuid_url)
-                user_info = r.json()
-                print(user_info)
-                return JsonResponse(json.dumps(user_info, ensure_ascii = False), status=200, safe=False)
+            user_puuid = r.json()['puuid']
+            try:
+                match_game_ids = requests.get("https://asia.api.riotgames.com/tft/match/v1/matches/by-puuid/"+ user_puuid +"/ids?start=0&count=10&api_key=" + api_key)
+                matchHistory = []
+                user_info = {}
+                for game_id in match_game_ids:
+                    try:
+                        get_match_data_info = requests.get("https://asia.api.riotgames.com/tft/match/v1/matches/"+game_id+"?api_key=" + api_key)
+                        get_users_info={}
+                        part_list = []
+                        for participant in get_match_data_info['info']['participants']:
+                            try:
+                                #p = requests.get("https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/"+participant+"?api_key=" + api_key)
+                                #part_list.append(p['name'])
+                                if participant.puuid == user_puuid:
+                                    get_users_info = participant
+                                    #user_info = {"name":p['name'], "iconImg":p['profileIconId'],"level":p['summonerLevel'], "gameStat":{}}
+                            except:
+                                return HttpResponse(status = 429)   
+                        data = {"participants":list(part_list), "augments":list(get_users_info['augments']), "placement":get_users_info['placement'], "traits":list(get_users_info['traits']), "units":list(get_users_info['units'])}
+                        matchHistory.append(data)
+                    except:
+                        return HttpResponse(status = 429)
+                res = user_info + {"matchHistory":matchHistory}
+                return JsonResponse(res, status=200, safe=False)
             except:
-                return HttpResponse(status = 404)
+                return HttpResponse(status = 429)
+        except:
+            return HttpResponse(status = 404)
     else:
         return HttpResponse(status = 403)
     
-# @csrf_exempt
-# def get_dice_stat_info(request, target_champion):
-#     if request.method == "POST":
-#         try:
-            
-#             res = {
-#                 diceStat:,
-#                 targetChampion:""
-#             }
-#             return JsonResponse(res, status=200, safe=False)
-#         except:
-#             return HttpResponse(status = 404)
-#     else:
-#         return HttpResponse(status = 403)
+@csrf_exempt
+def get_dice_stat_info(request, type, level, name):
+    if request.method == "POST":
+        try:
+            res = {
+                diceStat:,
+                targetChampion:""
+            }
+            return JsonResponse(res, status=200, safe=False)
+        except:
+            return HttpResponse(status = 404)
+    else:
+        return HttpResponse(status = 403)

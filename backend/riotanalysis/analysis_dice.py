@@ -71,16 +71,11 @@ def make_prob_json():
 
 data_json = make_prob_json()
 
-def use_dice_on():
-    input_name = input("사기주사위를 쓸 챔피언의 이름을 입력하세요 : ")
-    input_level = int(input("현재 레벨을 입력하세요 : "))
-
+def use_dice_on(input_name, input_level):
     data = data_json[input_name]['Level ' + str(input_level)]
     print(data)
 
-def want_to_roll():
-    input_name = input("사기주사위를 쓸 챔피언의 이름을 입력하세요 : ")
-    input_level = int(input("현재 레벨을 입력하세요 : "))
+def want_to_roll(input_name, input_level):
     
     champion_list = list(data_json[input_name]['Level 3'].keys())
     result_dict = {}
@@ -89,12 +84,10 @@ def want_to_roll():
         result_dict[name] = prob
     print(result_dict)
 
-
-input_type = input("챔피언에게 사용할 때 확률을 알고 싶으면 1, \n어떤 챔피언에게 사용해야 할지 알고 싶으면 2: ")
-
-if input_type == 1:
-    use_dice_on()
-else:
-    want_to_roll()
+def get_dice_stat(input_type, input_name, input_level):
+    if input_type == 1:
+        use_dice_on(input_name, input_level)
+    else:
+        want_to_roll(input_name, input_level)
 
 
