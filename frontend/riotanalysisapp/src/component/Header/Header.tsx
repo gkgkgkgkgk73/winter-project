@@ -25,6 +25,9 @@ function Header(){
     const onClickLogoHandler = () => {
         return navigate('/')
     }
+    const onClickDiceStatHandler = () => {
+        return navigate('/dicestat')
+    }
     const navigate = useNavigate();
 
 
@@ -44,17 +47,17 @@ function Header(){
                         {isOpen?
                             <ul id='dropdown-menu' >
                                 <li>
-                                    <a id = 'navigate-btn' style={{paddingLeft:'5px'}} href='#trait-info-box'>
+                                    <a id = 'navigate-btn' style={{paddingLeft:'5px'}}  onClick={explanationHandler} href='#trait-info-box'>
                                         시너지
                                     </a>
                                 </li>
                                 <li>
-                                    <a id = 'navigate-btn' style={{paddingLeft:'5px'}} href='#item-info-box'>
+                                    <a id = 'navigate-btn' style={{paddingLeft:'5px'}} onClick={explanationHandler} href='#item-info-box'>
                                         아이템
                                     </a>
                                 </li>
                                 <li>
-                                    <a id = 'navigate-btn' style={{paddingLeft:'5px'}} href='#augment-info-box'>
+                                    <a id = 'navigate-btn' style={{paddingLeft:'5px'}}  onClick={explanationHandler} href='#augment-info-box'>
                                         증강체
                                     </a>
                                 </li>
@@ -91,7 +94,7 @@ function Header(){
                         }
                     </div>
                     <div id='menu-obj'>
-                        <button id = 'navigate-btn' style={{fontSize:'2vh'}} onClick={explanationHandler}>통계</button>
+                        <button id = 'navigate-btn' style={{fontSize:'2vh'}}>통계</button>
                         {isOpen?
                             <ul id='dropdown-menu' >
                                 <li>
@@ -115,7 +118,7 @@ function Header(){
                                     </a>
                                 </li>
                                 <li>
-                                    <a id = 'navigate-btn' style={{paddingLeft:'5px'}} href='#augment-info-box'>
+                                    <a id = 'navigate-btn' style={{paddingLeft:'5px'}} onClick={onClickDiceStatHandler} href ="#diceStatBox">
                                         사기주사위 확률 계산
                                     </a>
                                 </li>

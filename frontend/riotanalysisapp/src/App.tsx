@@ -4,7 +4,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Explanation from './container/Explanation/Explanation';
 import AugmentStat from './container/AugmentStat/AugmentStat';
-import UserInfo from './component/UserInfo/UserInfo';
+import UserInfo from './container/UserInfo/UserInfo';
+import DiceStat from './container/DiceStat/DiceStat';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path='/' element={<Explanation/>}/>
         <Route path='/userinfo' element={<UserInfo/>}/>
         <Route path='/augmentstat' element={<AugmentStat/>}/>
+        <Route path='/dicestat' element={<DiceStat/>}/>
       </Routes>
     </BrowserRouter>
   );

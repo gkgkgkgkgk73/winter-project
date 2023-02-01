@@ -69,25 +69,38 @@ def make_prob_json():
         champ_level_prob_result_dict[name] = result_dict
     return champ_level_prob_result_dict
 
-data_json = make_prob_json()
-
 def use_dice_on(input_name, input_level):
+    data_json = make_prob_json()
     data = data_json[input_name]['Level ' + str(input_level)]
-    print(data)
+    keys = list(data.keys())
+    res = []
+    for k in keys:
+        d = {'champion_name':k,
+             'stat':data[k]}
+        res.append(d)
+    print(res)
+    return res
 
 def want_to_roll(input_name, input_level):
-    
+    data_json = make_prob_json()
     champion_list = list(data_json[input_name]['Level 3'].keys())
     result_dict = {}
     for name in champion_list:
         prob = data_json[name]['Level ' + str(input_level)][input_name]
         result_dict[name] = prob
-    print(result_dict)
+    keys = list(result_dict.keys())
+    res = []
+    for k in keys:
+        d = {'champion_name':k,
+             'stat':result_dict[k]}
+        res.append(d)
+    print(res)
+    return res
 
 def get_dice_stat(input_type, input_name, input_level):
     if input_type == 1:
-        use_dice_on(input_name, input_level)
+        return use_dice_on(input_name, input_level)
     else:
-        want_to_roll(input_name, input_level)
+        return want_to_roll(input_name, input_level)
 
 
