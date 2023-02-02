@@ -35,9 +35,7 @@ function TraitInfo(props:IProps) {
                                     {hover === e.id && (
                                         <div className = "hover-text">
                                             <text>name : {trait_champion_list.find(e => e.id === hover)?.name}</text>
-                                            <br></br>
                                             <text>stat : {JSON.stringify(trait_champion_list.find(e => e.id === hover)?.championStats)}</text>
-                                            <br></br>
                                             <text>info : {trait_champion_list.find(e => e.id === hover)?.info}</text>
                                         </div>
                                     )

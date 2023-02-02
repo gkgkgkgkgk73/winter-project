@@ -9,3 +9,8 @@
     margin: 1rem;
     background-color: black;
 }
+
+.hover-text{
+    display: flex;
+    flex-direction: column;
+}
