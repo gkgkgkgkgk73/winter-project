@@ -23,7 +23,7 @@ function TraitInfo(props:IProps) {
                 <text id="traitName">{props.traitName}</text>
                 <text id="traitDetail">{props.traitDetail}</text>
             </div>
-            <div>
+            <div className = "UnitInfoBow">
                 {
                     trait_champion_list.map(e=>{
                         return (
@@ -31,6 +31,15 @@ function TraitInfo(props:IProps) {
                                 <div onMouseEnter={()=>setHover(e.id)} onMouseLeave={()=>setHover(-1)}>
                                     <img id = "champion-img" src={e.img}/>
                                 </div>
+                            </div>
+                        )
+                    })
+                }
+                </div>
+                {
+                    trait_champion_list.map(e=>{
+                        return (
+                            <div>
                                 <DIV_Hover className = {`${hover !== -1 ? 'hover' : 'none'}`}>
                                     {hover === e.id && (
                                         <div className = "hover-text">
@@ -45,10 +54,10 @@ function TraitInfo(props:IProps) {
                         )
                     })
                 }
-            </div>
         </div>
     );
 }
+
 
 const DIV_Hover = styled.div`
   transition: top 1s ease-in;

@@ -14,3 +14,8 @@
     display: flex;
     flex-direction: column;
 }
+
+.UnitInfoBow{
+    display: flex;
+    flex-direction: row;
+}
