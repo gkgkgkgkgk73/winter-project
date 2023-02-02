@@ -182,16 +182,21 @@ def get_user_info(request, target_id):
             r = requests.get(get_puuid_url)
             
             while r.status_code == 429:
-                time.sleep(5)
+                time.sleep(20)
                 r = requests.get(get_puuid_url)
             user_puuid = r.json()['puuid']
+            print(r)
             try:
-                match_game_ids = requests.get("https://asia.api.riotgames.com/tft/match/v1/matches/by-puuid/"+ user_puuid +"/ids?start=0&count=10&api_key=" + api_key)
+                time.sleep(60)
+                match_game_ids = requests.get("https://asia.api.riotgames.com/tft/match/v1/matches/by-puuid/"+ user_puuid +"/ids?start=0&count=20&api_key=" + api_key)
+                print(match_game_ids)
                 matchHistory = []
                 user_info = {}
                 for game_id in match_game_ids:
                     try:
+                        time.sleep(60)
                         get_match_data_info = requests.get("https://asia.api.riotgames.com/tft/match/v1/matches/"+game_id+"?api_key=" + api_key)
+                        print(get_match_data_info)
                         get_users_info={}
                         part_list = []
                         for participant in get_match_data_info['info']['participants']:

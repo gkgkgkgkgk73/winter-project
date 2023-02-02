@@ -88,7 +88,7 @@ function DiceStat() {
                     {dicestat.diceStat.map((e)=>(
                         <div>
                             <p>name: {e.champion_name}</p>
-                            <p>stat: {e.stat}</p>
+                            <p>stat: {e.stat}%</p>
                         </div>
                     ))}
                 </div>
