@@ -22,7 +22,7 @@ class Champion(models.Model):
     champion_name = models.CharField(max_length=200, blank=True, null=True, )
     champion_img = models.CharField(max_length=200, blank=True, null=True, )
     champion_info = models.CharField(max_length=1000, blank=True, null=True, )
-    traidels.ManyToManyField(
+    traits = models.ManyToManyField(
         Trait,
         related_name='trait'
     )
