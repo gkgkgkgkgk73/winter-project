@@ -66,34 +66,55 @@ def get_champion_stat(champion_name):
         win_rate = win_count / pick_count
     return [round(win_rate * 100, 2), round(pick_count/game_size * 100, 2)]
 
-for name in champion_name_list:
-    df = get_item_tier(name)
-    pick_rate = list(df['pick_rate'])
-    win_rate = list(df['win_rate'])
+def save_plots():
+    for name in champion_name_list:
+        df = get_item_tier(name)
+        pick_rate = list(df['pick_rate'])
+        win_rate = list(df['win_rate'])
 
-    # 챔피언 평균 승률
+        # 챔피언 평균 승률
+        champion_win_rate = get_champion_stat(name)[0]
+        # 챔피언 평균 픽률
+        # 픽률은 뭔가 이상해서 잠시 뺏음.
+        #champion_pick_rate = get_champion_stat(name)[1]
+
+        plt.scatter(pick_rate, win_rate, s= 5, c = 'k')
+
+        # 점에 라벨 붙이기
+        for i in range(len(df)):
+            row = df.iloc[i] # 한 행씩 꺼내기
+            item_name = row['item_name'] 
+            x = row['pick_rate'] # x좌표가 저장된 열
+            y = row['win_rate'] # y좌표가 저장된 열
+            plt.text(x, y, item_name, fontsize = 'small')
+        
+        plt.axhline(y=champion_win_rate, color='r', linewidth=1, linestyle='--')
+        #plt.axvline(x=champion_pick_rate, color='r', linewidth=1, linestyle='--')
+
+        plt.xlabel('pick_rate')
+        plt.ylabel('win_rate')
+        plt.title(name)
+
+        path = 'itemgraphs/' + name + '.png'
+        plt.savefig(path)
+        plt.clf()
+
+def get_top5_items(champion_name):
+    name = champion_name
+
+    data = get_item_tier(name)
     champion_win_rate = get_champion_stat(name)[0]
-    # 챔피언 평균 픽률
-    # 픽률은 뭔가 이상해서 잠시 뺏음.
-    #champion_pick_rate = get_champion_stat(name)[1]
 
-    plt.scatter(pick_rate, win_rate, s= 5, c = 'k')
-
-    # 점에 라벨 붙이기
-    for i in range(len(df)):
-        row = df.iloc[i] # 한 행씩 꺼내기
-        item_name = row['item_name'] 
-        x = row['pick_rate'] # x좌표가 저장된 열
-        y = row['win_rate'] # y좌표가 저장된 열
-        plt.text(x, y, item_name, fontsize = 'small')
+    data_over_win_rate = data[data['win_rate'] >= champion_win_rate]
+    data_over_sorted = data_over_win_rate.sort_values('pick_rate', ascending=False)
     
-    plt.axhline(y=champion_win_rate, color='r', linewidth=1, linestyle='--')
-    #plt.axvline(x=champion_pick_rate, color='r', linewidth=1, linestyle='--')
+    top5_names = data_over_sorted.head(5)['item_name'].tolist()
+    # 5개 상위 아이템의 한글 이름을 반환
+    # 선정 기준은 챔피언 평균 승률보다 높은 승률을 가진 아이템 중 픽률 높은 순
+    return top5_names
 
-    plt.xlabel('pick_rate')
-    plt.ylabel('win_rate')
-    plt.title(name)
+def main():
+    for champion in champion_name_list:
+        print(champion + ': ' + ' | '.join(get_top5_items(champion)))
 
-    path = 'itemgraphs/' + name + '.png'
-    plt.savefig(path)
-    plt.clf()
+main()
