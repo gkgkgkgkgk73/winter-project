@@ -199,6 +199,13 @@ export const fetchDiceStat = createAsyncThunk("riotAPI/fetchDiceStat",
     }
 )
 
+export const fetchItemForUnit = createAsyncThunk("riotAPI/fetchItemForUnit",
+    async(unit_name:string)=>{
+        const response = await axios.post<RiotBaseItemType|RiotUpperItemType[]>(`/api/riotanalysisapp/itemforunit/${unit_name}`);
+        console.log(response.data);
+        return response.data;
+    })
+
 export const riotAPI = createSlice({
     name:'riotAPI',
     initialState,

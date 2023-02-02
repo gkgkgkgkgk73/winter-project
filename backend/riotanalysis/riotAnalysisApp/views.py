@@ -9,6 +9,8 @@ import os
 from django.views.decorators.csrf import csrf_exempt
 import urllib
 from  analysis_dice import get_dice_stat, want_to_roll, make_prob_json, use_dice_on
+from analysis_from_db_item_unit_stat import get_top5_items
+
 specific_item = ['영혼의 형상','죽음의 저항','영원한 겨울', '무한한 삼위일체', '마나자네', '흑요석 양날 도끼', '란두인의 성소', '로켓 주먹', '황금 징수의 총', '존야의 역설', '우르프 천사의 지팡이', '축복받은 피바라기', '푸른 축복', '장미가시 조끼', '선의의 성배', '빛나는 죽음의 검', '용의 의지', '철갑의 서막', '수호상 돌갑옷', '악마 학살자', '새벽의 서광', '구인수의 심판', '공정의 주먹', '마법공학 생명검', '천공의 대검', '집단 충격기', '눈부신 건틀릿', '영겁의 속삭임', '타곤 정상의 펜던트', '엔젤로노미콘', '반짝이는 수은', '라바돈의 초월한 죽음모자', '고속 광자포', '면죄', '루난의 폭풍', '경외의 장막', '히라나의 창', '스태틱의 호의', '태양빛 망토', '장난꾸러기의 장갑', '거인의 맹세', '의지파괴자', '워모그의 자부심', '지크의 조화', '겨울바람', '즈롯 소환문', '메카 선택기', '에이스 상징', '방패대 상징', '톱날 피바라기', '싸움꾼 상징', '주문투척자 상징', '민간인 상징', '특등사수 상징', '엄호대 상징', '메카: 프라임 상징', '기계유망주 상징', '과부하_오류 // 거인 학살자', '해커 상징', '비결정적 정의의 손길', '자화 이온 충격기', '익살꾼 상징', '용수철이 든 고속 연사포', '정찰단 상징', '날뛰는 쇼진의 창', '더 고요한 침묵의 장막', '별 수호자 상징', '과열된 태양불꽃 망토', '지하세께 상징', '유도집전형 워모그의 갑옷', 'B.F. 대검', '곡궁', '쇠사슬 조끼', '음전자 망토', '쓸데없이 큰 지팡이', '여신의 눈물', '거인의 허리띠', '연습용 장갑', '뒤집개']
 specific_upper_item = ['대천사의 지팡이', '피바라기', '덤불 조끼',  '힘의 성배', '죽음의 검', '용의 발톱', '전략가의 왕관', '수호자의 맹세', '가고일 돌갑옷', '밤의 끝자락', '구인수의 격노검', '마법공학 총검', '무한의 대검', '이온 충격기', '보석 건틀릿', '최후의 속삭임', '강철의 솔라리 펜던트', '거인 학살자', '모렐로노미콘', '방패파괴자', '수은', '라바돈의 죽음모자', '고속 연사포', '태양불꽃 망토', '구원', '루난의 허리케인',  '푸른 파수꾼', '침묵의 장막', '쇼진의 창', '스태틱의 단검', '도적의 장갑', '즈롯 차원문', '거인의 결의', '정의의 손길', '워모그의 갑옷', '지크의 전령', '서풍']
 specific_augment = ['전투 마법사 I', '천상의 축복 I', '사이버네틱 이식술 I', '사이버네틱 외피 I', '사이버네틱 통신 I', '추방자 I', '단결된 의지 I', '고전압 I', '경량급 I', '응급처치 키트', '예견 I', '아이템 꾸러미 I', '루덴의 메아리 I','임시변통 방어구 I', '나이프의 날 I', '대격변 생성기', '재생의 바람 I', '사냥의 전율 I', '꼬마 거인', '3에 깃든 힘 I', '자리 비움', '도둑 무리 I', '커다란 친구 I', '일관성', '후반 전문가', '판도라의 대기석', '준비 I', '자동방어체계 심장', '방패대 심장', '동물특공대 심장', '싸움꾼 심장', '주문투척자 심장', '특등사수 심장', '엄호대 심장', '결투가 심장', '해커 심장', '선의 심장', '레이저단 심장','마스코트 심장', '황소부대 심장', '정찰단 심장', '무법자 심장', '별 수호자 심장']
@@ -38,6 +40,8 @@ api_key = get_secret("RIOT_API_KEY")
 def index():
     print("Hello world!")
     
+#input: x
+#output: 전체 시너지 정보
 def get_trait_info(request):
     if request.method == "GET":
         result = []
@@ -56,6 +60,8 @@ def get_trait_info(request):
     else:
         return HttpResponse(status = 403)
 
+#input: x
+#output: 전체 챔피언 정보
 def get_champion_info(request):
     if request.method == "GET":
         champions = Champion.objects.all()
@@ -80,6 +86,8 @@ def get_champion_info(request):
     else:
         return HttpResponse(status = 403)
 
+#input: x
+#output: 전체 아이템 정보
 def get_item_info(request):
     if request.method == "GET":
         result = {}
@@ -127,6 +135,8 @@ def get_item_info(request):
     else:
         return HttpResponse(status=403)
 
+#input: x
+#output: 전체 증강체 정보
 def get_augment_info(request):
     if request.method == "GET":
         augment_list = []
@@ -154,7 +164,9 @@ def get_augment_info(request):
         return JsonResponse(list(result), status = 200, safe=False)
     else:
         return HttpResponse(status = 403)
-
+    
+#input: 시너지(특성) id
+#output: 해당 id를 가진 시너지 정보
 def get_trait_detail(request, trait_id):
     if request.method == "POST":
         try:
@@ -173,6 +185,8 @@ def get_trait_detail(request, trait_id):
     else:
         return HttpResponse(status = 403)
 
+#input: 유저 아이디
+#output: 유저 게임 데이터 및 유저 관련 정보
 @csrf_exempt
 def get_user_info(request, target_id):
     if request.method == "POST":
@@ -185,18 +199,18 @@ def get_user_info(request, target_id):
                 time.sleep(20)
                 r = requests.get(get_puuid_url)
             user_puuid = r.json()['puuid']
-            print(r)
+            print(r.json())
             try:
                 time.sleep(60)
                 match_game_ids = requests.get("https://asia.api.riotgames.com/tft/match/v1/matches/by-puuid/"+ user_puuid +"/ids?start=0&count=20&api_key=" + api_key)
-                print(match_game_ids)
+                print(match_game_ids.json())
                 matchHistory = []
                 user_info = {}
                 for game_id in match_game_ids:
                     try:
                         time.sleep(60)
                         get_match_data_info = requests.get("https://asia.api.riotgames.com/tft/match/v1/matches/"+game_id+"?api_key=" + api_key)
-                        print(get_match_data_info)
+                        print(get_match_data_info.json())
                         get_users_info={}
                         part_list = []
                         for participant in get_match_data_info['info']['participants']:
@@ -220,7 +234,9 @@ def get_user_info(request, target_id):
             return HttpResponse(status = 404)
     else:
         return HttpResponse(status = 403)
-    
+
+#input: 유닛 이름, 확률 계산 방식, 레벨
+#output: 같은 시너지 유닛 이름, 각각의 확률, 타겟 유닛 이름
 @csrf_exempt
 def get_dice_stat_info(request):
     if request.method == "POST":
@@ -232,5 +248,25 @@ def get_dice_stat_info(request):
             return JsonResponse(res, status=200, safe=False)
         except:
             return HttpResponse(status = 404)
+    else:
+        return HttpResponse(status = 403)
+    
+@csrf_exempt
+def get_item_info_for_unit(request, unit_name):
+    if request.method == "POST":
+        res = []
+        item_list = get_top5_items(unit_name)
+        for item in item_list:
+            try:
+                i = UpperItem.objects.get(item_name = item)
+                base = []
+                for b in i.base_items.all():
+                    temp = BaseItem.objects.get(item_id = b.item_id)
+                    base.append({"item_name":temp['item_name'], 'itemImg':temp['item_img'], 'itemInfo':temp['item_info']})
+                res.append({'itemID':  i['item_id'], 'itemName':i['item_name'], 'itemImg':i['item_img'], 'itemInfo':i['item_info'], 'baseItems':base})
+            except:
+                i = BaseItem.objects.get(item_name = item)
+                res.append({'itemID':  i['item_id'], 'itemName':i['item_name'], 'itemImg':i['item_img'], 'itemInfo':i['item_info'], 'baseItems':[]})
+        return JsonResponse(list(res), status = 200, safe=False)
     else:
         return HttpResponse(status = 403)

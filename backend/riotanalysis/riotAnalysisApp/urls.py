@@ -10,5 +10,6 @@ urlpatterns = [
     path('trait/<int:trait_id>/', views.get_trait_detail, name='get_trait_detail/'),
     path('userinfo/<str:target_id>', views.get_user_info, name='userinfo/'),
     path('dicestat/', views.get_dice_stat_info, name='dicestat/'),
+    path('itemforunit/<str:unit_name>', views.get_item_info_for_unit, name='itemforunit/')
     # path('augmentstat/',views.get_augment_stat, name='augmentstat/')
 ]

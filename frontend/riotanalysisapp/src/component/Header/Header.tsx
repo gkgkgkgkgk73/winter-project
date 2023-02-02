@@ -5,7 +5,8 @@ import DropDown from '../DropDown/DropDown';
 import styled, { css } from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
-import { fetchUserInfo } from '../../store/slices/riotAPI';
+import { fetchChampions, fetchUserInfo, selectchampion } from '../../store/slices/riotAPI';
+import { useSelector } from 'react-redux';
 
 function Header(){
 
@@ -26,10 +27,10 @@ function Header(){
         return navigate('/')
     }
     const onClickDiceStatHandler = () => {
+        dispatch(fetchChampions())
         return navigate('/dicestat')
     }
     const navigate = useNavigate();
-
 
     return (
         <div className='header'>
