@@ -128,7 +128,7 @@ def get_item_info(request):
             upper_result = list(upper_result)
             base_items = list(base_items)
             result = {'upper_items': upper_result, 'base_items': base_items}
-            print(result)
+            # print(result)
             return JsonResponse(result, status = 200, safe=False)
         else:
             return HttpResponse(status=404)
@@ -196,38 +196,46 @@ def get_user_info(request, target_id):
             r = requests.get(get_puuid_url)
             
             while r.status_code == 429:
-                time.sleep(20)
+                time.sleep(0.1)
+                print('reloading')
                 r = requests.get(get_puuid_url)
             user_puuid = r.json()['puuid']
-            print(r.json())
+            print(user_puuid)
+            
             try:
-                time.sleep(60)
-                match_game_ids = requests.get("https://asia.api.riotgames.com/tft/match/v1/matches/by-puuid/"+ user_puuid +"/ids?start=0&count=20&api_key=" + api_key)
-                print(match_game_ids.json())
+                # time.sleep(0.5)
+                match_game_ids = requests.get("https://asia.api.riotgames.com/tft/match/v1/matches/by-puuid/"+ user_puuid +"/ids?start=0&count=20&api_key=" + api_key).json()
+                match_game_ids = match_game_ids[:5]
+                print(match_game_ids)
+
                 matchHistory = []
-                user_info = {}
                 for game_id in match_game_ids:
                     try:
-                        time.sleep(60)
-                        get_match_data_info = requests.get("https://asia.api.riotgames.com/tft/match/v1/matches/"+game_id+"?api_key=" + api_key)
-                        print(get_match_data_info.json())
-                        get_users_info={}
+                        # time.sleep(0.5)
+                        get_match_data_info = requests.get("https://asia.api.riotgames.com/tft/match/v1/matches/"+ game_id +"?api_key=" + api_key).json()
                         part_list = []
-                        for participant in get_match_data_info['info']['participants']:
+                        for participant in get_match_data_info['metadata']['participants']:
                             try:
-                                #p = requests.get("https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/"+participant+"?api_key=" + api_key)
-                                #part_list.append(p['name'])
-                                if participant.puuid == user_puuid:
-                                    get_users_info = participant
-                                    #user_info = {"name":p['name'], "iconImg":p['profileIconId'],"level":p['summonerLevel'], "gameStat":{}}
+                                p = requests.get("https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/"+participant+"?api_key=" + api_key).json()
+                                part_list.append(p['name'])
+                                                                
+                                if participant == user_puuid:
+                                    my_info = {"name":p['name'], "iconImg":p['profileIconId'],"level":p['summonerLevel'], "gameStat":{}}
                             except:
                                 return HttpResponse(status = 429)   
-                        data = {"participants":list(part_list), "augments":list(get_users_info['augments']), "placement":get_users_info['placement'], "traits":list(get_users_info['traits']), "units":list(get_users_info['units'])}
+                        print(part_list)
+                      
+                        user_index = get_match_data_info['metadata']['participants'].index(user_puuid)
+                        user_info = get_match_data_info['info']['participants'][user_index]
+
+                        data = {"participants":list(part_list), "augments":list(user_info['augments']), "placement":user_info['placement'], "traits":list(user_info['traits']), "units":list(user_info['units'])}
                         matchHistory.append(data)
                     except:
                         return HttpResponse(status = 429)
-                res = user_info + {"matchHistory":matchHistory}
-                return JsonResponse(res, status=200, safe=False)
+
+                my_info["matchHistory"] = list(matchHistory)
+                
+                return JsonResponse(my_info, status=200, safe=False)
             except:
                 return HttpResponse(status = 429)
         except:
