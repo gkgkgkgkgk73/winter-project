@@ -16,3 +16,8 @@
     margin: 1rem;
     background-color: black;
 }
+#dice-stat-list{
+    display: flex;
+    flex-direction: row;
+    padding-left:10px;
+}

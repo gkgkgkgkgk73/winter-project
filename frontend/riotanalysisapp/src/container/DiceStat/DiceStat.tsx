@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import './DiceStat.css';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
-import { fetchDiceStat, selectdicestat } from '../../store/slices/riotAPI';
+import { fetchChampions, fetchDiceStat, selectchampion, selectdicestat } from '../../store/slices/riotAPI';
 import { useSelector } from 'react-redux';
 import Header from '../../component/Header/Header';
-
 
 function DiceStat() {
 
@@ -15,6 +14,8 @@ function DiceStat() {
     const dispatch = useDispatch<AppDispatch>();
     const [ready, setReady] = useState<boolean>(false);
     const dicestat = useSelector(selectdicestat);
+    const championinfo = useSelector(selectchampion).champions;
+
     const TYPE_OPTION = [
         {value: 1, name:'챔피언한테 사용할 때 나올 수 있는 챔피언의 확률'},
         {value: 2, name:'원하는 챔피언이 등장할 확률'}
@@ -27,7 +28,11 @@ function DiceStat() {
             console.log(dicestat.diceStat[0].champion_name)
         }
     },[dicestat])
-    
+
+    useEffect(()=>{
+        dispatch(fetchChampions())
+    },[])
+
     const LEVEL_OPTION = [
         {value: 3, name:'3'},
         {value: 4, name:'4'},
@@ -144,9 +149,11 @@ function DiceStat() {
             {ready?
                 <div>
                     {dicestat.diceStat.map((e)=>(
-                        <div>
-                            <p>name: {CHAMPION_OPTION.filter((c)=>{return c.value === e.champion_name})[0].name}</p>
-                            <p>stat: {e.stat}%</p>
+                        <div id = 'dice-stat-list'>
+                            { championinfo &&
+                                <img id='champion-img' src={championinfo.filter((c)=>{return c.apiName === e.champion_name})[0].img}></img>
+                            }
+                            <p>name: {CHAMPION_OPTION.filter((c)=>{return c.value === e.champion_name})[0].name}  stat: {e.stat}%</p>
                         </div>
                     ))}
                 </div>
