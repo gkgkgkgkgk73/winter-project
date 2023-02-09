@@ -10,26 +10,50 @@ from riotanalysisapp.models import MatchData
 from django.db.models import Q
 import matplotlib.pyplot as plt
 
-def get_champion_win_rate(champion_name):
-    queryset = MatchData.objects.all().values()
-    game_size = len(queryset)
+queryset = MatchData.objects.all().values()
 
-    win_count = 0
-    pick_count = 0
+def get_most_2_traits(query):
+    traits_list = query['traits']
+    traits_list = json.loads(traits_list)
+    
+    trait_name_list = []
+    for trait in traits_list:
+        if trait['tier_current'] > 1:
+            trait_name = trait['name']
+            trait_name_list.append(trait_name.split('_')[1])
+    
+    return ' '.join(sorted(trait_name_list))
 
-    for query in queryset:
-        placement = query['placement']
-            
-        units = json.loads(query['units'])
-        for unit in units:
-            if unit['character_id'] != champion_name:
-                pass
-            else:
-                pick_count += 1
-                if placement < 5:
-                    win_count += 1
-    win_rate = 0
-    if pick_count > 0:
-        win_rate = win_count / pick_count
-    return [round(win_rate * 100, 2), round(pick_count/game_size * 100, 2)]
-print(get_champion_win_rate('TFT8_Jax'))
+def get_3_items_champions(query):
+    units_list = query['units']
+    units_list = json.loads(units_list)
+    
+    unit_name_list = []
+    for unit in units_list:
+        if len(unit['items'])> 2:
+            name = unit['character_id']
+            unit_name_list.append(name.split('_')[1])
+
+    return ' '.join(sorted(unit_name_list))
+     
+result = {}
+placement_result = {}
+for query in queryset:
+    placement = query['placement']
+
+    trait_name = get_most_2_traits(query)
+    champions_name = get_3_items_champions(query)
+    if len(trait_name) > 0 and len(champions_name) > 0:
+        total_deck_name =  trait_name + ' ' + champions_name
+        
+        if total_deck_name in result:
+            result[total_deck_name] += 1
+            placement_result[total_deck_name] += placement
+        else:
+            result[total_deck_name] = 1
+            placement_result[total_deck_name] = placement
+
+key_list = list(result.keys())
+for key in key_list:
+    if result[key] > 50:
+        print(str(key) + ': ' + str(result[key]) + ', average: ' + str(round(placement_result[key]/result[key],2)))

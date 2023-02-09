@@ -153,7 +153,7 @@ function DiceStat() {
                             { championinfo &&
                                 <img id='champion-img' src={championinfo.filter((c)=>{return c.apiName === e.champion_name})[0].img}></img>
                             }
-                            <p>name: {CHAMPION_OPTION.filter((c)=>{return c.value === e.champion_name})[0].name}  stat: {e.stat}%</p>
+                            <p>name: {CHAMPION_OPTION.filter((c)=>{return c.value === e.champion_name})[0].name}  prob: {e.stat}%</p>
                         </div>
                     ))}
                 </div>

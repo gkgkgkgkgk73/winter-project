@@ -15,7 +15,6 @@ from sklearn.cluster import KMeans
 
 # 챔피언 보유 현황을 바탕으로(몇성인지, 어떤 아이템을 가지고 있는지는 고려 X) k-means clustering 진행
 
-# 모든 유닛 리스트
 
 # queryset = Champion.objects.all().values('champion_apiName')
 
@@ -27,6 +26,8 @@ from sklearn.cluster import KMeans
 #         champion_name_list.append(name)
 # champion_name_list = list(set(champion_name_list))
 # champion_name_list는 시즌8 모든 챔피언 리스트(순서, 특성X), 59개
+
+# 모든 유닛 리스트
 champion_name_list = ['TFT8_Janna', 'TFT8_Samira', 'TFT8_Kaisa', 'TFT8_Jax', 'TFT8_Velkoz', 'TFT8_WuKong', 'TFT8_Lux', 'TFT8_Ekko', 'TFT8_Blitzcrank', 'TFT8_Yasuo', 'TFT8_Yuumi', 'TFT8_Gangplank', 'TFT8_Soraka', 'TFT8_Zed', 
 'TFT8_Sejuani', 'TFT8_Malphite', 'TFT8_Taliyah', 'TFT8_Galio', 'TFT8_Jinx', 'TFT8_BelVeth', 'TFT8_Viego', 'TFT8_Rammus', 'TFT8_Vi', 'TFT8_Nunu', 'TFT8_Aphelios', 'TFT8_Zac', 'TFT8_Renekton', 'TFT8_Annie', 'TFT8_Leona', 'TFT8_Sivir', 'TFT8_Ashe', 'TFT8_Sett', 'TFT8_Rell', 'TFT8_Senna', 'TFT8_Lulu', 'TFT8_Camille', 'TFT8_Urgot', 'TFT8_Leblanc', 'TFT8_Nilah', 'TFT8_Riven', 'TFT8_Mordekaiser', 'TFT8_Fiora', 'TFT8_Kayle', 'TFT8_Ezreal', 'TFT8_Syndra', 'TFT8_Vayne', 'TFT8_Sylas', 'TFT8_Nasus', 'TFT8_Fiddlesticks', 'TFT8_Poppy', 'TFT8_LeeSin', 'TFT8_Alistar', 'TFT8_AurelionSol', 'TFT8_Chogath', 'TFT8_MissFortune', 'TFT8_Sona', 'TFT8_Talon', 'TFT8_Draven', 'TFT8_Zoe']
 
@@ -65,7 +66,7 @@ points = df.values
 # plt.title('The Elbow Method showing the optimal k')
 # plt.show()
 
-num_cluster = 12
+num_cluster = 20
 kmeans = KMeans(n_clusters = num_cluster).fit(points)
 centers = kmeans.cluster_centers_
 new_centers = []
@@ -75,7 +76,7 @@ for center in centers:
         if number < 0.2: num = 0
         elif number > 0.8: num = 1
         else: num = number
-        num = number
+        #num = number
         subresult.append(num)
     new_centers.append(subresult)
     # num digit 줄이기
@@ -93,7 +94,7 @@ for query in query_set:
     is_top4.append(top4)
 dic = {'placement': placements, 'is_top4': is_top4, 'labels': labels}
 df = pd.DataFrame(dic)
-#print(df)
+print(df)
 
 main_champions_list = []
 for j in range(num_cluster):
@@ -103,8 +104,8 @@ for j in range(num_cluster):
             main_champions.append(champion_name_list[i])
     main_champions_list.append(main_champions)
     
-    #print("#" + str(j+1) + "th " + "main champions are: " + ' '.join(main_champions))    
-    #print('------------------------\n')
+    print("#" + str(j+1) + "th " + "main champions are: " + ' '.join(main_champions))    
+    print('------------------------\n')
 
     
 # 12 그룹의 챔피언들의 시너지의 합을 계산
@@ -136,21 +137,21 @@ for di in trait_number_list:
     trait_number_with_name.append(new_dict)
 
 #정보 print
-# print("---------------------------------------------------------------------------------------------------------------------------------------------------------------")
-# num = 1
-# for traits in trait_number_with_name:
-#     print(str(num) + "th ")
-#     print(traits)
-#     print("---------------------------------------------------------------------------------------------------------------------------------------------------------------")
-#     num += 1
+print("---------------------------------------------------------------------------------------------------------------------------------------------------------------")
+num = 1
+for traits in trait_number_with_name:
+    print(str(num) + "th ")
+    print(traits)
+    print("---------------------------------------------------------------------------------------------------------------------------------------------------------------")
+    num += 1
 
 # Todo: data -> labels에 따른 승률 데이터 추려볼 수도?
-group_by_win_rate_list = []
-for i in range(12):
-    df_new = df[df['labels'] == i]
-    df_true = df_new[df_new['is_top4'] == True]
-    win_rate = len(df_true) / len(df_new)
-    group_by_win_rate_list.append(win_rate)
+# group_by_win_rate_list = []
+# for i in range(12):
+#     df_new = df[df['labels'] == i]
+#     df_true = df_new[df_new['is_top4'] == True]
+#     win_rate = len(df_true) / len(df_new)
+#     group_by_win_rate_list.append(win_rate)
 
-print(group_by_win_rate_list)
-print(main_champions_list)
+# print(group_by_win_rate_list)
+# print(main_champions_list)
