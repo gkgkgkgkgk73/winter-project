@@ -22,4 +22,4 @@ for query in query_set:
     win_rate = round(win_rate, 3) * 100
     data.append([item_name, pick_rate, win_rate])
 df = pd.DataFrame(data, columns=['item_name', 'pick_rate', 'win_rate'])
-print(tabulate(df.sort_values(by = df.columns[int(order_type)], ascending=False), headers = 'keys', tablefmt= 'psql', showindex=True, stralign='center', numalign='center' ))
+# print(tabulate(df.sort_values(by = df.columns[int(order_type)], ascending=False), headers = 'keys', tablefmt= 'psql', showindex=True, stralign='center', numalign='center' ))

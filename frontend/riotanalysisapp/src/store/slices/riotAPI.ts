@@ -111,6 +111,7 @@ export interface BasicGameInfo {
     augmentRank:AugmentRank[];
     userinfo:UserInfoType[];
     dicestat:DiceStatInfo;
+    itemforunit:RiotUpperItemType[]
 }
 
 const initialState:BasicGameInfo= {
@@ -133,6 +134,7 @@ const initialState:BasicGameInfo= {
         diceStat:[],
         targetChampion:"",
     },
+    itemforunit:[],
 
 }
 
@@ -201,7 +203,7 @@ export const fetchDiceStat = createAsyncThunk("riotAPI/fetchDiceStat",
 
 export const fetchItemForUnit = createAsyncThunk("riotAPI/fetchItemForUnit",
     async(unit_name:string)=>{
-        const response = await axios.post<RiotBaseItemType|RiotUpperItemType[]>(`/api/riotanalysisapp/itemforunit/${unit_name}`);
+        const response = await axios.post<RiotUpperItemType[]>(`/api/riotanalysisapp/itemforunit/${unit_name}`);
         console.log(response.data);
         return response.data;
     })
@@ -242,6 +244,10 @@ export const riotAPI = createSlice({
             state.dicestat = action.payload;
             return state
         },
+        fetchItemForUnit:(state, action:PayloadAction<RiotUpperItemType[]>)=>{
+            state.itemforunit = action.payload;
+            return state;
+        }
         // fetchAugments: (state, action: PayloadAction<RiotAugmentType[]>) => {
 		// 	console.log(action.payload)
         //     state.augment.augments = action.payload;
@@ -324,6 +330,15 @@ export const riotAPI = createSlice({
             state.dicestat= {diceStat:[], targetChampion:""};
             console.log(action.error)
         });
+
+        builder.addCase(fetchItemForUnit.fulfilled, (state, action)=>{
+            state.itemforunit = action.payload;
+            return state;
+        });
+        builder.addCase(fetchItemForUnit.rejected, (state, action)=>{
+            state.itemforunit = []
+            console.log(action.error)
+        });
     }
 
 })
@@ -336,4 +351,5 @@ export const selectupperitems = (state:RootState) => state.riotAPI.item.upperIte
 export const selectbaseitems = (state:RootState) => state.riotAPI.item.baseItems;
 export const selectuserinfo = (state:RootState) => state.riotAPI.userinfo;
 export const selectdicestat = (state:RootState) => state.riotAPI.dicestat;
+export const selectitemforunit = (state:RootState) => state.riotAPI.itemforunit;
 export default riotAPI.reducer;

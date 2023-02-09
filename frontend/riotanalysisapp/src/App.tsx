@@ -6,6 +6,7 @@ import Explanation from './container/Explanation/Explanation';
 import AugmentStat from './container/AugmentStat/AugmentStat';
 import UserInfo from './container/UserInfo/UserInfo';
 import DiceStat from './container/DiceStat/DiceStat';
+import ItemForUnit from './container/ItemForUnit/ItemForUnit';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path='/userinfo' element={<UserInfo/>}/>
         <Route path='/augmentstat' element={<AugmentStat/>}/>
         <Route path='/dicestat' element={<DiceStat/>}/>
+        <Route path='/itemforunit' element={<ItemForUnit/>}/>
       </Routes>
     </BrowserRouter>
   );

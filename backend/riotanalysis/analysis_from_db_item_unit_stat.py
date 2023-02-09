@@ -113,8 +113,8 @@ def get_top5_items(champion_name):
     # 선정 기준은 챔피언 평균 승률보다 높은 승률을 가진 아이템 중 픽률 높은 순
     return top5_names
 
-def main():
-    for champion in champion_name_list:
-        print(champion + ': ' + ' | '.join(get_top5_items(champion)))
+# def main():
+#     for champion in champion_name_list:
+#         print(champion + ': ' + ' | '.join(get_top5_items(champion)))
 
-main()
+# main()

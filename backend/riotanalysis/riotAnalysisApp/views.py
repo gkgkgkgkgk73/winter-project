@@ -9,7 +9,7 @@ import os
 from django.views.decorators.csrf import csrf_exempt
 import urllib
 from  analysis_dice import get_dice_stat, want_to_roll, make_prob_json, use_dice_on
-from analysis_from_db_item_unit_stat import get_top5_items
+from analysis_from_db_item_unit_stat import get_top5_items, get_item_tier, get_champion_stat
 
 specific_item = ['영혼의 형상','죽음의 저항','영원한 겨울', '무한한 삼위일체', '마나자네', '흑요석 양날 도끼', '란두인의 성소', '로켓 주먹', '황금 징수의 총', '존야의 역설', '우르프 천사의 지팡이', '축복받은 피바라기', '푸른 축복', '장미가시 조끼', '선의의 성배', '빛나는 죽음의 검', '용의 의지', '철갑의 서막', '수호상 돌갑옷', '악마 학살자', '새벽의 서광', '구인수의 심판', '공정의 주먹', '마법공학 생명검', '천공의 대검', '집단 충격기', '눈부신 건틀릿', '영겁의 속삭임', '타곤 정상의 펜던트', '엔젤로노미콘', '반짝이는 수은', '라바돈의 초월한 죽음모자', '고속 광자포', '면죄', '루난의 폭풍', '경외의 장막', '히라나의 창', '스태틱의 호의', '태양빛 망토', '장난꾸러기의 장갑', '거인의 맹세', '의지파괴자', '워모그의 자부심', '지크의 조화', '겨울바람', '즈롯 소환문', '메카 선택기', '에이스 상징', '방패대 상징', '톱날 피바라기', '싸움꾼 상징', '주문투척자 상징', '민간인 상징', '특등사수 상징', '엄호대 상징', '메카: 프라임 상징', '기계유망주 상징', '과부하_오류 // 거인 학살자', '해커 상징', '비결정적 정의의 손길', '자화 이온 충격기', '익살꾼 상징', '용수철이 든 고속 연사포', '정찰단 상징', '날뛰는 쇼진의 창', '더 고요한 침묵의 장막', '별 수호자 상징', '과열된 태양불꽃 망토', '지하세께 상징', '유도집전형 워모그의 갑옷', 'B.F. 대검', '곡궁', '쇠사슬 조끼', '음전자 망토', '쓸데없이 큰 지팡이', '여신의 눈물', '거인의 허리띠', '연습용 장갑', '뒤집개']
 specific_upper_item = ['대천사의 지팡이', '피바라기', '덤불 조끼',  '힘의 성배', '죽음의 검', '용의 발톱', '전략가의 왕관', '수호자의 맹세', '가고일 돌갑옷', '밤의 끝자락', '구인수의 격노검', '마법공학 총검', '무한의 대검', '이온 충격기', '보석 건틀릿', '최후의 속삭임', '강철의 솔라리 펜던트', '거인 학살자', '모렐로노미콘', '방패파괴자', '수은', '라바돈의 죽음모자', '고속 연사포', '태양불꽃 망토', '구원', '루난의 허리케인',  '푸른 파수꾼', '침묵의 장막', '쇼진의 창', '스태틱의 단검', '도적의 장갑', '즈롯 차원문', '거인의 결의', '정의의 손길', '워모그의 갑옷', '지크의 전령', '서풍']
@@ -263,18 +263,26 @@ def get_dice_stat_info(request):
 def get_item_info_for_unit(request, unit_name):
     if request.method == "POST":
         res = []
-        item_list = get_top5_items(unit_name)
+        print(unit_name)
+        item_list = get_top5_items(unit_name.strip())
+        print(len(item_list))
         for item in item_list:
+            print(item)
             try:
-                i = UpperItem.objects.get(item_name = item)
+                i = UpperItem.objects.filter(item_name = item)[0]
                 base = []
                 for b in i.base_items.all():
+                    print(b.item_name)
                     temp = BaseItem.objects.get(item_id = b.item_id)
-                    base.append({"item_name":temp['item_name'], 'itemImg':temp['item_img'], 'itemInfo':temp['item_info']})
-                res.append({'itemID':  i['item_id'], 'itemName':i['item_name'], 'itemImg':i['item_img'], 'itemInfo':i['item_info'], 'baseItems':base})
+                    if temp:
+                        base.append({"item_name":temp.item_name, 'itemImg':temp.item_img, 'itemInfo':temp.item_info})
+                res.append({'itemID':  i.item_id, 'itemName':i.item_name, 'itemImg':i.item_img, 'itemInfo':i.item_info, 'baseItems':base})
+                print(base)
+                print(res)
             except:
-                i = BaseItem.objects.get(item_name = item)
-                res.append({'itemID':  i['item_id'], 'itemName':i['item_name'], 'itemImg':i['item_img'], 'itemInfo':i['item_info'], 'baseItems':[]})
+                i = BaseItem.objects.filter(item_name = item)[0]
+                print(res)
+                res.append({'itemID':  i.item_id, 'itemName':i.item_name, 'itemImg':i.item_img, 'itemInfo':i.item_info, 'baseItems':[]})
         return JsonResponse(list(res), status = 200, safe=False)
     else:
         return HttpResponse(status = 403)

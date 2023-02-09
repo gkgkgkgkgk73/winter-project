@@ -30,6 +30,9 @@ function Header(){
         dispatch(fetchChampions())
         return navigate('/dicestat')
     }
+    const onClickItemForUnitHandler = () => {
+        return navigate('/itemforunit')
+    }
     const navigate = useNavigate();
 
     return (
@@ -114,7 +117,7 @@ function Header(){
                                     </a>
                                 </li>
                                 <li>
-                                    <a id = 'navigate-btn' style={{paddingLeft:'5px'}} href='#augment-info-box'>
+                                    <a id = 'navigate-btn' style={{paddingLeft:'5px'}} onClick={onClickItemForUnitHandler}>
                                         챔피언 & 아이템 승률 계산
                                     </a>
                                 </li>
