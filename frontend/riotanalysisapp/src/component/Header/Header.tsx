@@ -47,21 +47,21 @@ function Header(){
             <ul className='page-list'>
                 <div className = 'menu-list'>
                     <div id='menu-obj'>
-                        <button id = 'navigate-btn' style={{fontSize:'2vh'}} onClick={explanationHandler}>TFT 시즌 8 정보</button>
+                        <button id = 'navigate-btn' style={{fontSize:'2vh'}} onClick={onClickLogoHandler}>TFT 시즌 8 정보</button>
                         {isOpen?
                             <ul id='dropdown-menu' >
                                 <li>
-                                    <a id = 'navigate-btn' style={{paddingLeft:'5px'}}  onClick={explanationHandler} href='#trait-info-box'>
+                                    <a id = 'navigate-btn' style={{paddingLeft:'5px'}} onClick={onClickLogoHandler} href='#trait-info-box'>
                                         시너지
                                     </a>
                                 </li>
                                 <li>
-                                    <a id = 'navigate-btn' style={{paddingLeft:'5px'}} onClick={explanationHandler} href='#item-info-box'>
+                                    <a id = 'navigate-btn' style={{paddingLeft:'5px'}} onClick={onClickLogoHandler} href='#item-info-box'>
                                         아이템
                                     </a>
                                 </li>
                                 <li>
-                                    <a id = 'navigate-btn' style={{paddingLeft:'5px'}}  onClick={explanationHandler} href='#augment-info-box'>
+                                    <a id = 'navigate-btn' style={{paddingLeft:'5px'}} onClick={onClickLogoHandler} href='#augment-info-box'>
                                         증강체
                                     </a>
                                 </li>

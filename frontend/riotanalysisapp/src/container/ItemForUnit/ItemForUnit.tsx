@@ -112,7 +112,7 @@ function ItemForUnit(){
                     <button className='navigate-btn' onClick={championSelectHandler}>찾기</button>
                 </div>
                 {ready?
-                    <div className = 'item-info-box' id = 'item-info-box'>
+                    <div className = 'item-info-box'>
                         <div id='sub-title'>
                             <text className="title-text">아이템</text>
                         </div>
