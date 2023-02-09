@@ -54,6 +54,7 @@ for query in queryset:
             placement_result[total_deck_name] = placement
 
 key_list = list(result.keys())
-for key in key_list:
-    if result[key] > 50:
-        print(str(key) + ': ' + str(result[key]) + ', average: ' + str(round(placement_result[key]/result[key],2)))
+# for key in key_list:
+#     if result[key] > 50:
+#         print(str(key) + ': ' + str(result[key]) + ', average: ' + str(round(placement_result[key]/result[key],2)))
+print(len(key_list))
