@@ -275,14 +275,27 @@ def get_item_info_for_unit(request, unit_name):
                     print(b.item_name)
                     temp = BaseItem.objects.get(item_id = b.item_id)
                     if temp:
-                        base.append({"item_name":temp.item_name, 'itemImg':temp.item_img, 'itemInfo':temp.item_info})
-                res.append({'itemID':  i.item_id, 'itemName':i.item_name, 'itemImg':i.item_img, 'itemInfo':i.item_info, 'baseItems':base})
+                        base.append(temp.item_id)
+                res.append({'id':i.item_id,
+                'name':i.item_name,
+                'img':i.item_img,
+                'info':i.item_info,
+                'apiName':i.item_apiName,
+                'effect':i.item_effect,
+                'baseItems':base})
                 print(base)
                 print(res)
             except:
                 i = BaseItem.objects.filter(item_name = item)[0]
                 print(res)
-                res.append({'itemID':  i.item_id, 'itemName':i.item_name, 'itemImg':i.item_img, 'itemInfo':i.item_info, 'baseItems':[]})
+                res.append(
+                {'id':i.item_id,
+                'name':i.item_name,
+                'img':i.item_img,
+                'info':i.item_info,
+                'apiName':i.item_apiName,
+                'effect':i.item_effect,
+                'baseItems':[]})
         return JsonResponse(list(res), status = 200, safe=False)
     else:
         return HttpResponse(status = 403)
